@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CorePortals 🚀</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --dark-bg: #0d0d0e;
+      --darker-bg: #070709;
+      --card-bg: #151518;
+      --accent: #00ffe5;
+      --accent-glow: 0 0 10px rgba(0, 255, 229, 0.7);
+      --text-primary: #f0f0f0;
+      --text-secondary: #a0a0a0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: radial-gradient(circle at top, var(--darker-bg), var(--dark-bg));
+      color: var(--text-primary);
+      text-align: center;
+      min-height: 100vh;
+      padding-bottom: 20px;
+    }
+
+    header {
+      padding: 25px 20px;
+      font-size: 2.8rem;
+      background: linear-gradient(90deg, #1a1f4a, var(--darker-bg));
+      color: var(--accent);
+      text-shadow: var(--accent-glow);
+      letter-spacing: 3px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(0, 255, 229, 0.1),
+        transparent
+      );
+      transform: rotate(30deg);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      background: rgba(10, 10, 12, 0.8);
+      backdrop-filter: blur(5px);
+      border-bottom: 1px solid rgba(0, 255, 229, 0.2);
+    }
+
+    .tab-button {
+      padding: 15px 25px;
+      font-size: 1.1rem;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      font-weight: 500;
+    }
+
+    .tab-button:hover {
+      color: var(--text-primary);
+    }
+
+    .tab-button.active {
+      color: var(--accent);
+      text-shadow: var(--accent-glow);
+    }
+
+    .tab-button.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      width: 80%;
+      height: 3px;
+      background: var(--accent);
+      box-shadow: var(--accent-glow);
+      border-radius: 3px 3px 0 0;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .search-container {
+      padding: 15px;
+      background: rgba(10, 10, 12, 0.8);
+      backdrop-filter: blur(5px);
+      border-bottom: 1px solid rgba(0, 255, 229, 0.2);
+    }
+
+    #gameSearch, #appSearch {
+      width: 90%;
+      max-width: 600px;
+      padding: 12px 20px;
+      font-size: 16px;
+      background: rgba(25, 25, 30, 0.8);
+      border: 1px solid rgba(0, 255, 229, 0.3);
+      border-radius: 30px;
+      color: var(--text-primary);
+      outline: none;
+      transition: all 0.3s ease;
+      display: none;
+    }
+
+    #gameSearch:focus, #appSearch:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(0, 255, 229, 0.4);
+    }
+
+    #gameSearch::placeholder, #appSearch::placeholder {
+      color: var(--text-secondary);
+    }
+
+    .game-stats, .app-stats {
+      padding: 10px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      display: none;
+    }
+
+    .game-grid, .app-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 25px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .game-card, .app-card {
+      background: linear-gradient(145deg, var(--card-bg), #111215);
+      border: 1px solid rgba(0, 255, 229, 0.15);
+      border-radius: 12px;
+      padding: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--text-primary);
+      text-shadow: 0 0 5px rgba(0, 255, 229, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 220px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-card::before, .app-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .game-card:hover, .app-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      border-color: var(--accent);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), var(--accent-glow);
+    }
+
+    .game-card:hover::before, .app-card:hover::before {
+      opacity: 1;
+    }
+
+    .game-logo, .app-logo {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      font-size: 2.5rem;
+      color: var(--accent);
+      text-shadow: var(--accent-glow);
+      transition: all 0.3s ease;
+    }
+
+    .game-card:hover .game-logo, .app-card:hover .app-logo {
+      transform: scale(1.1);
+    }
+
+    .game-title, .app-title {
+      font-size: 1rem;
+      margin-top: 5px;
+      font-weight: 500;
+    }
+
+    .game-category, .app-category {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.97);
+      z-index: 9999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #gameFrame {
+      flex: 1;
+      border: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      padding: 10px;
+      z-index: 10000;
+    }
+
+    #closeBtn, #fullscreenBtn {
+      padding: 12px 25px;
+      font-size: 1rem;
+      background: rgba(0, 255, 229, 0.2);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    #closeBtn:hover, #fullscreenBtn:hover {
+      background: rgba(0, 255, 229, 0.3);
+      box-shadow: var(--accent-glow);
+    }
+
+    footer {
+      padding: 20px;
+      background: var(--darker-bg);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 30px;
+      border-top: 1px solid rgba(0, 255, 229, 0.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes glow {
+      0% { text-shadow: 0 0 5px var(--accent); }
+      50% { text-shadow: 0 0 20px var(--accent), 0 0 30px var(--accent); }
+      100% { text-shadow: 0 0 5px var(--accent); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @media (max-width: 768px) {
+      .game-grid, .app-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+        padding: 15px;
+      }
+
+      header {
+        font-size: 2.2rem;
+        padding: 20px 15px;
+      }
+
+      .game-card, .app-card {
+        min-height: 190px;
+        padding: 12px;
+      }
+
+      .game-logo, .app-logo {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+      }
+
+      .tab-button {
+        padding: 12px 15px;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .game-grid, .app-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 10px;
+        padding: 10px;
+      }
+
+      header {
+        font-size: 1.8rem;
+      }
+
+      .game-title, .app-title {
+        font-size: 0.9rem;
+      }
+
+      .tab-button {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="glowing-text">🌌 CorePortals 🚀</div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-button active" onclick="switchTab('games')">
+      <i class="fas fa-gamepad"></i> Games
+    </button>
+    <button class="tab-button" onclick="switchTab('apps')">
+      <i class="fas fa-plug"></i> Apps
+    </button>
+  </div>
+
+  <div class="search-container">
+    <input type="text" id="gameSearch" placeholder="Search for a game..." onkeyup="searchGames()" />
+    <input type="text" id="appSearch" placeholder="Search for an app..." onkeyup="searchApps()" />
+  </div>
+
+  <div class="game-stats" id="gameStats">
+    Total Games: <span id="totalGames">0</span> | 
+    Showing: <span id="showingGames">0</span>
+  </div>
+
+  <div class="app-stats" id="appStats">
+    Total Apps: <span id="totalApps">0</span> | 
+    Showing: <span id="showingApps">0</span>
+  </div>
+
+  <div class="tab-content active" id="gamesTab">
+    <main class="game-grid" id="gameGrid">
+    </main>
+  </div>
+
+  <div class="tab-content" id="appsTab">
+    <main class="app-grid" id="appGrid">
+    </main>
+  </div>
+
+  <div id="overlay">
+    <iframe id="gameFrame" src=""></iframe>
+    <div class="controls">
+      <button id="closeBtn" onclick="closeGame()"><i class="fas fa-arrow-left"></i> Back</button>
+      <button id="fullscreenBtn" onclick="toggleFullscreen()"><i class="fas fa-expand"></i> Fullscreen</button>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 CorePortals, Skulgly On Top | Powered by HTML5, CSS3 & JavaScript
+  </footer>
+
+  <script>
+
+    const games = [
+      { name: "10 Minutes Till Dawn", url: "https://xpixelcoderx.github.io/games/10-minutes-till-dawn/", icon: "fa-clock", category: "Action" },
+      { name: "100ng", url: "https://xpixelcoderx.github.io/games/100ng/", icon: "fa-gamepad", category: "Arcade" },
+      { name: "1v1lol", url: "https://xpixelcoderx.github.io/games/1v1lol/", icon: "fa-crosshairs", category: "Shooter" },
+      { name: "1v1space", url: "https://xpixelcoderx.github.io/games/1v1space/", icon: "fa-rocket", category: "Space" },
+      { name: "2020 Game", url: "https://xpixelcoderx.github.io/games/2020-game/", icon: "fa-calendar", category: "Puzzle" },
+      { name: "2048 Multitask", url: "https://xpixelcoderx.github.io/games/2048-multitask/", icon: "fa-th", category: "Puzzle" },
+      { name: "2048", url: "https://xpixelcoderx.github.io/games/2048/", icon: "fa-th-large", category: "Puzzle" },
+      { name: "8ball Billards Classic", url: "https://xpixelcoderx.github.io/games/8ball-billards-classic/", icon: "fa-circle", category: "Sports" },
+      { name: "9007199254740992", url: "https://xpixelcoderx.github.io/games/9007199254740992/", icon: "fa-superscript", category: "Puzzle" },
+      { name: "DogeMiner", url: "https://xpixelcoderx.github.io/games/dogeminer/", icon: "fa-dog", category: "Clicker" },
+      { name: "FullScreenMario/Source", url: "https://xpixelcoderx.github.io/games/fullscreenmario-source/", icon: "fa-hat-cowboy", category: "Platform" },
+      { name: "HexGL", url: "https://xpixelcoderx.github.io/games/hexgl/", icon: "fa-car", category: "Racing" },
+      { name: "OfflineParadise", url: "https://xpixelcoderx.github.io/games/offlineparadise/", icon: "fa-parachute-box", category: "Adventure" },
+      { name: "Squid Gun Fest", url: "https://xpixelcoderx.github.io/games/squid-gun-fest/", icon: "fa-water", category: "Shooter" },
+      { name: "Stickman Survival", url: "https://xpixelcoderx.github.io/games/stickman-survival/", icon: "fa-running", category: "Action" },
+      { name: "Achievement Unlocked", url: "https://xpixelcoderx.github.io/games/achievementunlocked/", icon: "fa-trophy", category: "Puzzle" },
+      { name: "A Dark Room", url: "https://xpixelcoderx.github.io/games/adarkroom/", icon: "fa-moon", category: "Adventure" },
+      { name: "Adrenaline Challenge", url: "https://xpixelcoderx.github.io/games/adrenalinechallenge/", icon: "fa-heart-pulse", category: "Action" },
+      { name: "Age of War", url: "https://xpixelcoderx.github.io/games/age-of-war/", icon: "fa-helmet-battle", category: "Strategy" },
+      { name: "Alien Invaders IO", url: "https://xpixelcoderx.github.io/games/alien-invaders-io/", icon: "fa-alien-8bit", category: "Shooter" },
+      { name: "Alien Hominid", url: "https://xpixelcoderx.github.io/games/alienhominid/", icon: "fa-alien", category: "Shooter" },
+      { name: "Align 4", url: "https://xpixelcoderx.github.io/games/align-4/", icon: "fa-th-large", category: "Puzzle" },
+      { name: "Among Us", url: "https://xpixelcoderx.github.io/games/among-us/", icon: "fa-user-astronaut", category: "Social" },
+      { name: "Angry Birds", url: "https://xpixelcoderx.github.io/games/angry-birds/", icon: "fa-dove", category: "Arcade" },
+      { name: "Anti-Terrorist Rush", url: "https://xpixelcoderx.github.io/games/anti-terrorist-rush/", icon: "fa-running", category: "Action" },
+      { name: "Arcade Wizard", url: "https://xpixelcoderx.github.io/games/arcade-wizard/", icon: "fa-hat-wizard", category: "Arcade" },
+      { name: "ASCII Space", url: "https://xpixelcoderx.github.io/games/asciispace/", icon: "fa-globe", category: "Space" },
+      { name: "Aspiring Artist", url: "https://xpixelcoderx.github.io/games/aspiring-artist/", icon: "fa-paint-brush", category: "Creative" },
+      { name: "Asteroids", url: "https://xpixelcoderx.github.io/games/asteroids/", icon: "fa-meteor", category: "Arcade" },
+      { name: "Astray", url: "https://xpixelcoderx.github.io/games/astray/", icon: "fa-ghost", category: "Puzzle" },
+      { name: "Avalanche", url: "https://xpixelcoderx.github.io/games/avalanche/", icon: "fa-mountain", category: "Action" },
+      { name: "Awesome Tanks 2", url: "https://xpixelcoderx.github.io/games/awesome-tanks-2/", icon: "fa-tank", category: "Action" },
+      { name: "Backcountry", url: "https://xpixelcoderx.github.io/games/backcountry/", icon: "fa-tree", category: "Adventure" },
+      { name: "Backflip Dive 3D", url: "https://xpixelcoderx.github.io/games/backflip-dive-3d/", icon: "fa-swimmer", category: "Sports" },
+      { name: "Backrooms", url: "https://xpixelcoderx.github.io/games/backrooms/", icon: "fa-door-open", category: "Horror" },
+      { name: "Bad Ice Cream 2", url: "https://xpixelcoderx.github.io/games/bad-ice-cream-2/", icon: "fa-ice-cream", category: "Puzzle" },
+      { name: "Bad Ice Cream 3", url: "https://xpixelcoderx.github.io/games/bad-ice-cream-3/", icon: "fa-ice-cream", category: "Puzzle" },
+      { name: "Bad Ice Cream", url: "https://xpixelcoderx.github.io/games/bad-ice-cream/", icon: "fa-ice-cream", category: "Puzzle" },
+      { name: "Baldi's Basics", url: "https://xpixelcoderx.github.io/games/baldis-basics/", icon: "fa-chalkboard-teacher", category: "Horror" },
+      { name: "Basket Bros IO", url: "https://xpixelcoderx.github.io/games/basket-bros-io/", icon: "fa-basketball-ball", category: "Sports" },
+      { name: "Basketball IO", url: "https://xpixelcoderx.github.io/games/basketball-io/", icon: "fa-basketball-ball", category: "Sports" },
+      { name: "Basketball Legends 2020", url: "https://xpixelcoderx.github.io/games/basketball-legends-2020/", icon: "fa-basketball-ball", category: "Sports" },
+      { name: "Basketball Stars", url: "https://xpixelcoderx.github.io/games/basketball-stars/", icon: "fa-basketball-ball", category: "Sports" },
+      { name: "Battle for Gondor", url: "https://xpixelcoderx.github.io/games/battleforgondor/", icon: "fa-chess-knight", category: "Strategy" },
+      { name: "Big Red Button", url: "https://xpixelcoderx.github.io/games/bigredbutton/", icon: "fa-square", category: "Puzzle" },
+      { name: "Binding of Isaac", url: "https://xpixelcoderx.github.io/games/binding-of-isaac/", icon: "fa-cross", category: "Adventure" },
+      { name: "BitLife", url: "https://xpixelcoderx.github.io/games/bitlife/", icon: "fa-chart-line", category: "Simulation" },
+      { name: "Blacholesquare", url: "https://xpixelcoderx.github.io/games/blacholesquare/", icon: "fa-circle", category: "Puzzle" },
+      { name: "Black Hole Square", url: "https://xpixelcoderx.github.io/games/blackholesquare/", icon: "fa-circle", category: "Puzzle" },
+      { name: "Black Knight", url: "https://xpixelcoderx.github.io/games/blackknight/", icon: "fa-chess-knight", category: "Action" },
+      { name: "Blocky Snakes", url: "https://xpixelcoderx.github.io/games/blocky-snakes/", icon: "fa-snake", category: "Arcade" },
+      { name: "Bloons TD", url: "https://xpixelcoderx.github.io/games/bloonstd/", icon: "fa-dove", category: "Strategy" },
+      { name: "Bloons TD 2", url: "https://xpixelcoderx.github.io/games/bloonstd2/", icon: "fa-dove", category: "Strategy" },
+      { name: "Bloxors", url: "https://xpixelcoderx.github.io/games/bloxors/", icon: "fa-cube", category: "Puzzle" },
+      { name: "Bounce Back", url: "https://xpixelcoderx.github.io/games/bounceback/", icon: "fa-arrows-alt-v", category: "Arcade" },
+      { name: "Boxel Rebound", url: "https://xpixelcoderx.github.io/games/boxel-rebound/", icon: "fa-square", category: "Puzzle" },
+      { name: "Boxhead 2 Play", url: "https://xpixelcoderx.github.io/games/boxhead2play/", icon: "fa-heading", category: "Shooter" },
+      { name: "Brave Explorers", url: "https://xpixelcoderx.github.io/games/brave-explorers/", icon: "fa-map", category: "Adventure" },
+      { name: "Breaking the Bank", url: "https://xpixelcoderx.github.io/games/breakingthebank/", icon: "fa-money-bill-wave", category: "Puzzle" },
+      { name: "Break Lock", url: "https://xpixelcoderx.github.io/games/breaklock/", icon: "fa-lock", category: "Puzzle" },
+      { name: "Breakout", url: "https://xpixelcoderx.github.io/games/breakout/", icon: "fa-square", category: "Arcade" },
+      { name: "Bloons TD 4", url: "https://xpixelcoderx.github.io/games/btd4/", icon: "fa-dove", category: "Strategy" },
+      { name: "BTTS", url: "https://xpixelcoderx.github.io/games/btts/", icon: "fa-question", category: "Puzzle" },
+      { name: "Burning Man 2", url: "https://xpixelcoderx.github.io/games/burning-man-2/", icon: "fa-fire", category: "Action" },
+      { name: "Cannon Basketball 4", url: "https://xpixelcoderx.github.io/games/cannon-basketball-4/", icon: "fa-basketball-ball", category: "Sports" },
+      { name: "Canyon Defense", url: "https://xpixelcoderx.github.io/games/canyondefense/", icon: "fa-mountain", category: "Strategy" },
+      { name: "Captain Callisto", url: "https://xpixelcoderx.github.io/games/captaincallisto/", icon: "fa-user-astronaut", category: "Adventure" },
+      { name: "Cars Simulator", url: "https://xpixelcoderx.github.io/games/cars-simulator/", icon: "fa-car", category: "Racing" },
+      { name: "Cell Machine", url: "https://xpixelcoderx.github.io/games/cell-machine/", icon: "fa-microscope", category: "Puzzle" },
+      { name: "Champion Archer", url: "https://xpixelcoderx.github.io/games/championarcher/", icon: "fa-bullseye", category: "Sports" },
+      { name: "Chess", url: "https://xpixelcoderx.github.io/games/chess/", icon: "fa-chess", category: "Strategy" },
+      { name: "Chill Radio", url: "https://xpixelcoderx.github.io/games/chill-radio/", icon: "fa-music", category: "Music" },
+      { name: "Chroma Incident", url: "https://xpixelcoderx.github.io/games/chromaincident/", icon: "fa-palette", category: "Puzzle" },
+      { name: "Chrome Dino", url: "https://xpixelcoderx.github.io/games/chrome-dino/", icon: "fa-t-rex", category: "Arcade" },
+      { name: "Chrome Dino (Alt)", url: "https://xpixelcoderx.github.io/games/chromedino/", icon: "fa-t-rex", category: "Arcade" },
+      { name: "Circlo", url: "https://xpixelcoderx.github.io/games/circlo/", icon: "fa-circle", category: "Puzzle" },
+      { name: "City Blocks 2", url: "https://xpixelcoderx.github.io/games/city-blocks-2/", icon: "fa-city", category: "Puzzle" },
+      { name: "Clean Up IO", url: "https://xpixelcoderx.github.io/games/clean-up-io/", icon: "fa-broom", category: "Puzzle" },
+      { name: "Cluster Rush", url: "https://xpixelcoderx.github.io/games/cluster-rush/", icon: "fa-running", category: "Action" },
+      { name: "Color Switch 2 Challenges", url: "https://xpixelcoderx.github.io/games/color-switch-2-challenges/", icon: "fa-palette", category: "Arcade" },
+      { name: "Connect 3", url: "https://xpixelcoderx.github.io/games/connect3/", icon: "fa-th", category: "Puzzle" },
+      { name: "Cookie Clicker", url: "https://xpixelcoderx.github.io/games/cookie-clicker/", icon: "fa-cookie-bite", category: "Clicker" },
+      { name: "Core Ball", url: "https://xpixelcoderx.github.io/games/core-ball/", icon: "fa-circle", category: "Arcade" },
+      { name: "Craftmine", url: "https://xpixelcoderx.github.io/games/craftmine/", icon: "fa-cube", category: "Sandbox" },
+      { name: "Creative Kill Chamber", url: "https://xpixelcoderx.github.io/games/creativekillchamber/", icon: "fa-skull", category: "Action" },
+      { name: "Crossy Road", url: "https://xpixelcoderx.github.io/games/crossyroad/", icon: "fa-frog", category: "Arcade" },
+      { name: "Crowd City 2", url: "https://xpixelcoderx.github.io/games/crowd-city-2/", icon: "fa-users", category: "Strategy" },
+      { name: "CS:GO Clicker", url: "https://xpixelcoderx.github.io/games/csgo-clicker/", icon: "fa-mouse-pointer", category: "Clicker" },
+      { name: "Cut the Rope: Holiday", url: "https://xpixelcoderx.github.io/games/ctr-holiday/", icon: "fa-gift", category: "Puzzle" },
+      { name: "Cut the Rope: Time Travel", url: "https://xpixelcoderx.github.io/games/ctr-tr/", icon: "fa-clock", category: "Puzzle" },
+      { name: "Cut the Rope", url: "https://xpixelcoderx.github.io/games/ctr/", icon: "fa-scissors", category: "Puzzle" },
+      { name: "Cubefield", url: "https://xpixelcoderx.github.io/games/cubefield/", icon: "fa-cube", category: "Arcade" },
+      { name: "Cupcake 2048", url: "https://xpixelcoderx.github.io/games/cupcake2048/", icon: "fa-cupcake", category: "Puzzle" },
+      { name: "Cut the Rope 2", url: "https://xpixelcoderx.github.io/games/cuttherope2/", icon: "fa-scissors", category: "Puzzle" },
+      { name: "Dadish", url: "https://xpixelcoderx.github.io/games/dadish/", icon: "fa-radish", category: "Platform" },
+      { name: "Dadish 3", url: "https://xpixelcoderx.github.io/games/dadish3/", icon: "fa-radish", category: "Platform" },
+      { name: "Dadish Two", url: "https://xpixelcoderx.github.io/games/dadishtwo/", icon: "fa-radish", category: "Platform" },
+      { name: "Dante", url: "https://xpixelcoderx.github.io/games/dante/", icon: "fa-fire", category: "Adventure" },
+      { name: "Deal or No Deal", url: "https://xpixelcoderx.github.io/games/deal-or-no-deal/", icon: "fa-briefcase", category: "Puzzle" },
+      { name: "Death Run 3D", url: "https://xpixelcoderx.github.io/games/death-run-3d/", icon: "fa-running", category: "Action" },
+      { name: "Death Soul", url: "https://xpixelcoderx.github.io/games/death-soul/", icon: "fa-skull", category: "Action" },
+      { name: "Deathrun", url: "https://xpixelcoderx.github.io/games/deathrun/", icon: "fa-running", category: "Action" },
+      { name: "Defend the Tank", url: "https://xpixelcoderx.github.io/games/defend-the-tank/", icon: "fa-shield-alt", category: "Strategy" },
+      { name: "Dino", url: "https://xpixelcoderx.github.io/games/dino/", icon: "fa-t-rex", category: "Arcade" },
+      { name: "Doctor Acorn 2", url: "https://xpixelcoderx.github.io/games/doctor-acorn2/", icon: "fa-tree", category: "Puzzle" },
+      { name: "Dodge", url: "https://xpixelcoderx.github.io/games/dodge/", icon: "fa-running", category: "Arcade" },
+      { name: "Doge Miner 2", url: "https://xpixelcoderx.github.io/games/doge-miner-2/", icon: "fa-dog", category: "Clicker" },
+      { name: "Doge Mining Simulator", url: "https://xpixelcoderx.github.io/games/doge-mining-simulator/", icon: "fa-dog", category: "Clicker" },
+      { name: "Doge 2048", url: "https://xpixelcoderx.github.io/games/doge2048/", icon: "fa-dog", category: "Puzzle" },
+      { name: "Don't Drop the White Ball 2", url: "https://xpixelcoderx.github.io/games/dont-drop-the-white-ball-2/", icon: "fa-circle", category: "Arcade" },
+      { name: "Doodle Jump", url: "https://xpixelcoderx.github.io/games/doodle-jump/", icon: "fa-arrow-up", category: "Arcade" },
+      { name: "Double Wires", url: "https://xpixelcoderx.github.io/games/doublewires/", icon: "fa-bolt", category: "Puzzle" },
+      { name: "Douchebag Workout 2", url: "https://xpixelcoderx.github.io/games/douchebag-workout-2/", icon: "fa-running", category: "Arcade" },
+      { name: "Dragon vs Bricks", url: "https://xpixelcoderx.github.io/games/dragon-vs-bricks/", icon: "fa-dragon", category: "Arcade" },
+      { name: "Draw the Hill", url: "https://xpixelcoderx.github.io/games/draw-the-hill/", icon: "fa-mountain", category: "Puzzle" },
+      { name: "Drive Mad", url: "https://xpixelcoderx.github.io/games/drive-mad/", icon: "fa-car", category: "Racing" },
+      { name: "Duck Life: Treasure Hunt", url: "https://xpixelcoderx.github.io/games/duck-life-treasurehunt/", icon: "fa-duck", category: "Adventure" },
+      { name: "Duck Life", url: "https://xpixelcoderx.github.io/games/ducklife/", icon: "fa-duck", category: "Adventure" },
+      { name: "Duck Life 1", url: "https://xpixelcoderx.github.io/games/ducklife1/", icon: "fa-duck", category: "Adventure" },
+      { name: "Duck Life 2", url: "https://xpixelcoderx.github.io/games/ducklife2/", icon: "fa-duck", category: "Adventure" },
+      { name: "Duck Life 3", url: "https://xpixelcoderx.github.io/games/ducklife3/", icon: "fa-duck", category: "Adventure" },
+      { name: "Duck Life 4", url: "https://xpixelcoderx.github.io/games/ducklife4/", icon: "fa-duck", category: "Adventure" },
+      { name: "Duke Dashington Remastered", url: "https://xpixelcoderx.github.io/games/duke-dashington-remastered/", icon: "fa-crown", category: "Adventure" },
+      { name: "Dungeon Craft", url: "https://xpixelcoderx.github.io/games/dungeon-craft/", icon: "fa-dungeon", category: "RPG" },
+      { name: "Edge Surf", url: "https://xpixelcoderx.github.io/games/edge-surf/", icon: "fa-desktop", category: "Arcade" },
+      { name: "Edge Not Found", url: "https://xpixelcoderx.github.io/games/edgenotfound/", icon: "fa-exclamation-triangle", category: "Puzzle" },
+      { name: "Elastic Face", url: "https://xpixelcoderx.github.io/games/elastic-face/", icon: "fa-grin", category: "Funny" },
+      { name: "Elastic Man", url: "https://xpixelcoderx.github.io/games/elasticman/", icon: "fa-user", category: "Funny" },
+      { name: "Emulator JS", url: "https://xpixelcoderx.github.io/games/emulator-js/", icon: "fa-gamepad", category: "Emulator" },
+      { name: "Endless War 3", url: "https://xpixelcoderx.github.io/games/endlesswar3/", icon: "fa-crosshairs", category: "Strategy" },
+      { name: "Escaping the Prison", url: "https://xpixelcoderx.github.io/games/escapingtheprison/", icon: "fa-lock-open", category: "Puzzle" },
+      { name: "Evil Glitch", url: "https://xpixelcoderx.github.io/games/evil-glitch/", icon: "fa-bug", category: "Horror" },
+      { name: "Evolution", url: "https://xpixelcoderx.github.io/games/evolution/", icon: "fa-dna", category: "Strategy" },
+      { name: "Exo", url: "https://xpixelcoderx.github.io/games/exo/", icon: "fa-microchip", category: "Action" },
+      { name: "Factory Balls Forever", url: "https://xpixelcoderx.github.io/games/factory-balls-forever/", icon: "fa-circle", category: "Puzzle" },
+      { name: "Factory Balls", url: "https://xpixelcoderx.github.io/games/factoryballs/", icon: "fa-circle", category: "Puzzle" },
+      { name: "Fake Virus", url: "https://xpixelcoderx.github.io/games/fake-virus/", icon: "fa-virus", category: "Puzzle" },
+      { name: "Fancy Pants Adventures", url: "https://xpixelcoderx.github.io/games/fancypantsadventures/", icon: "fa-running", category: "Platform" },
+      { name: "FBWG", url: "https://xpixelcoderx.github.io/games/fbwg/", icon: "fa-question", category: "Puzzle" },
+      { name: "Finn's Fantastic Food Machine", url: "https://xpixelcoderx.github.io/games/finns-fantastic-food-machine/", icon: "fa-utensils", category: "Puzzle" },
+      { name: "Fireboy and Watergirl: Forest Temple", url: "https://xpixelcoderx.github.io/games/fireboywatergirlforesttemple/", icon: "fa-fire", category: "Puzzle" },
+      { name: "Fire and Ice", url: "https://xpixelcoderx.github.io/games/fireice/", icon: "fa-fire", category: "Puzzle" },
+      { name: "Fire Water", url: "https://xpixelcoderx.github.io/games/firewater/", icon: "fa-tint", category: "Puzzle" },
+      { name: "Flappy 2048", url: "https://xpixelcoderx.github.io/games/flappy-2048/", icon: "fa-dove", category: "Arcade" },
+      { name: "Flappy Bird", url: "https://xpixelcoderx.github.io/games/flappy-bird/", icon: "fa-dove", category: "Arcade" },
+      { name: "Flappy Defense", url: "https://xpixelcoderx.github.io/games/flappy-defense/", icon: "fa-dove", category: "Strategy" },
+      { name: "Flash Tetris", url: "https://xpixelcoderx.github.io/games/flashtetris/", icon: "fa-th-large", category: "Puzzle" },
+      { name: "Flippy Fish", url: "https://xpixelcoderx.github.io/games/flippy-fish/", icon: "fa-fish", category: "Arcade" },
+      { name: "Flood Runner 2", url: "https://xpixelcoderx.github.io/games/flood-runner-2/", icon: "fa-water", category: "Action" },
+      { name: "Friday Night Funkin", url: "https://xpixelcoderx.github.io/games/fridaynightfunkin/", icon: "fa-music", category: "Rhythm" },
+      { name: "Friendly Fire", url: "https://xpixelcoderx.github.io/games/friendlyfire/", icon: "fa-fire", category: "Action" },
+      { name: "Froggy's Battle", url: "https://xpixelcoderx.github.io/games/froggys-battle/", icon: "fa-frog", category: "Action" },
+      { name: "Fruit Ninja", url: "https://xpixelcoderx.github.io/games/fruitninja/", icon: "fa-apple-alt", category: "Arcade" },
+      { name: "Frying Nemo", url: "https://xpixelcoderx.github.io/games/frying-nemo/", icon: "fa-fish", category: "Arcade" },
+      { name: "Game Inside", url: "https://xpixelcoderx.github.io/games/game-inside/", icon: "fa-gamepad", category: "Puzzle" },
+      { name: "Generic Fishing Game", url: "https://xpixelcoderx.github.io/games/generic-fishing-game/", icon: "fa-fish", category: "Simulation" },
+      { name: "Geo Dash 2", url: "https://xpixelcoderx.github.io/games/geodash-2/", icon: "fa-running", category: "Platform" },
+      { name: "Geo Dash", url: "https://xpixelcoderx.github.io/games/geodash/", icon: "fa-running", category: "Platform" },
+      { name: "Geometry Jump Sketchy", url: "https://xpixelcoderx.github.io/games/geometry_jump_sketchy/", icon: "fa-running", category: "Platform" },
+      { name: "Geometry Dash", url: "https://xpixelcoderx.github.io/games/geometrydash/", icon: "fa-running", category: "Platform" },
+      { name: "George and the Printer", url: "https://xpixelcoderx.github.io/games/georgeandtheprinter/", icon: "fa-print", category: "Puzzle" },
+      { name: "Getaway Shootout", url: "https://xpixelcoderx.github.io/games/getaway-shootout/", icon: "fa-running", category: "Action" },
+      { name: "Getting Over It", url: "https://xpixelcoderx.github.io/games/getting-over-it/", icon: "fa-mountain", category: "Puzzle" },
+      { name: "Gimme the Airpod", url: "https://xpixelcoderx.github.io/games/gimme-the-airpod/", icon: "fa-headphones", category: "Puzzle" },
+      { name: "Glass City", url: "https://xpixelcoderx.github.io/games/glass-city/", icon: "fa-city", category: "Puzzle" },
+      { name: "Go Ball", url: "https://xpixelcoderx.github.io/games/go-ball/", icon: "fa-circle", category: "Puzzle" },
+      { name: "Golf", url: "https://xpixelcoderx.github.io/games/golf/", icon: "fa-golf-ball", category: "Sports" },
+      { name: "Goodnight", url: "https://xpixelcoderx.github.io/games/goodnight/", icon: "fa-moon", category: "Puzzle" },
+      { name: "Google Snake", url: "https://xpixelcoderx.github.io/games/google-snake/", icon: "fa-google", category: "Arcade" },
+      { name: "Google Solitaire", url: "https://xpixelcoderx.github.io/games/google-solitaire/", icon: "fa-google", category: "Card" },
+      { name: "Gopher", url: "https://xpixelcoderx.github.io/games/gopher/", icon: "fa-paw", category: "Arcade" },
+      { name: "Gravity Soccer", url: "https://xpixelcoderx.github.io/games/gravity-soccer/", icon: "fa-futbol", category: "Sports" },
+      { name: "Green", url: "https://xpixelcoderx.github.io/games/green/", icon: "fa-square", category: "Puzzle" },
+      { name: "Greybox", url: "https://xpixelcoderx.github.io/games/greybox/", icon: "fa-square", category: "Puzzle" },
+      { name: "Grindcraft", url: "https://xpixelcoderx.github.io/games/grindcraft/", icon: "fa-cogs", category: "Crafting" },
+      { name: "Grow in the Hole", url: "https://xpixelcoderx.github.io/games/grow-in-the-hole/", icon: "fa-seedling", category: "Arcade" },
+      { name: "Gun Mayhem 2", url: "https://xpixelcoderx.github.io/games/gun-mayhem-2/", icon: "fa-gun", category: "Shooter" },
+      { name: "Gun Mayhem Redux", url: "https://xpixelcoderx.github.io/games/gun-mayhem-redux/", icon: "fa-gun", category: "Shooter" },
+      { name: "Gun Mayhem", url: "https://xpixelcoderx.github.io/games/gun-mayhem/", icon: "fa-gun", category: "Shooter" },
+      { name: "Gunspin", url: "https://xpixelcoderx.github.io/games/gunspin/", icon: "fa-gun", category: "Shooter" },
+      { name: "Hacker Type", url: "https://xpixelcoderx.github.io/games/hackertype/", icon: "fa-keyboard", category: "Typing" },
+      { name: "Happy Hop", url: "https://xpixelcoderx.github.io/games/happy-hop/", icon: "fa-arrows-alt-v", category: "Arcade" },
+      { name: "Happy Wheels", url: "https://xpixelcoderx.github.io/games/happy-wheels/", icon: "fa-wheelchair", category: "Racing" },
+      { name: "HBA", url: "https://xpixelcoderx.github.io/games/hba/", icon: "fa-question", category: "Puzzle" },
+      { name: "Helicopter", url: "https://xpixelcoderx.github.io/games/helicopter/", icon: "fa-helicopter", category: "Arcade" },
+      { name: "Helios", url: "https://xpixelcoderx.github.io/games/helios/", icon: "fa-sun", category: "Puzzle" },
+      { name: "Hex Empire", url: "https://xpixelcoderx.github.io/games/hexempire/", icon: "fa-chess-board", category: "Strategy" },
+      { name: "Hextris", url: "https://xpixelcoderx.github.io/games/hextris/", icon: "fa-hexagon", category: "Puzzle" },
+      { name: "House of Hazards", url: "https://xpixelcoderx.github.io/games/house-of-hazards/", icon: "fa-house", category: "Puzzle" },
+      { name: "Icy's Purple Head", url: "https://xpixelcoderx.github.io/games/icys-purple-head/", icon: "fa-head-side", category: "Puzzle" },
+      { name: "Idle Breakout", url: "https://xpixelcoderx.github.io/games/idle-breakout/", icon: "fa-square", category: "Idle" },
+      { name: "Idle Shark", url: "https://xpixelcoderx.github.io/games/idle-shark/", icon: "fa-shark", category: "Idle" },
+      { name: "Impossible Quiz", url: "https://xpixelcoderx.github.io/games/impossiblequiz/", icon: "fa-question", category: "Puzzle" },
+      { name: "Interactive Buddy", url: "https://xpixelcoderx.github.io/games/interactivebuddy/", icon: "fa-user", category: "Funny" },
+      { name: "iScribble IO", url: "https://xpixelcoderx.github.io/games/iscribble-io/", icon: "fa-pencil-alt", category: "Creative" },
+      { name: "Jelly Truck", url: "https://xpixelcoderx.github.io/games/jelly-truck/", icon: "fa-truck", category: "Racing" },
+      { name: "Jetpack", url: "https://xpixelcoderx.github.io/games/jetpack/", icon: "fa-rocket", category: "Arcade" },
+      { name: "Jimothy Piggerton", url: "https://xpixelcoderx.github.io/games/jimothy-piggerton/", icon: "fa-piggy-bank", category: "Adventure" },
+      { name: "Just One Boss", url: "https://xpixelcoderx.github.io/games/just-one-boss/", icon: "fa-skull", category: "Action" },
+      { name: "Justfall", url: "https://xpixelcoderx.github.io/games/justfall/", icon: "fa-arrow-down", category: "Arcade" },
+      { name: "Kart Fight IO", url: "https://xpixelcoderx.github.io/games/kart-fight-io/", icon: "fa-car", category: "Racing" },
+      { name: "Kitchen Gun Game", url: "https://xpixelcoderx.github.io/games/kitchen-gun-game/", icon: "fa-gun", category: "Shooter" },
+      { name: "Kitten Cannon", url: "https://xpixelcoderx.github.io/games/kittencannon/", icon: "fa-cat", category: "Arcade" },
+      { name: "Klocki", url: "https://xpixelcoderx.github.io/games/klocki/", icon: "fa-th-large", category: "Puzzle" },
+      { name: "Konnekt", url: "https://xpixelcoderx.github.io/games/konnekt/", icon: "fa-puzzle-piece", category: "Puzzle" },
+      { name: "Krunker", url: "https://xpixelcoderx.github.io/games/krunker/", icon: "fa-gun", category: "Shooter" },
+      { name: "Learn to Fly", url: "https://xpixelcoderx.github.io/games/learntofly/", icon: "fa-rocket", category: "Arcade" },
+      { name: "Learn to Fly 2", url: "https://xpixelcoderx.github.io/games/learntofly2/", icon: "fa-rocket", category: "Arcade" },
+      { name: "Line Rider", url: "https://xpixelcoderx.github.io/games/line-rider/", icon: "fa-sleigh", category: "Puzzle" },
+      { name: "Linquest", url: "https://xpixelcoderx.github.io/games/linquest/", icon: "fa-route", category: "Strategy" },
+      { name: "Madalin Stunt Cars 2", url: "https://xpixelcoderx.github.io/games/madalin-stunt-cars-2/", icon: "fa-car", category: "Racing" },
+      { name: "Madalin Stunt Cars 3", url: "https://xpixelcoderx.github.io/games/madalin-stunt-cars-3/", icon: "fa-car", category: "Racing" },
+      { name: "Make It Meme", url: "https://xpixelcoderx.github.io/games/makeitmeme/", icon: "fa-image", category: "Creative" },
+      { name: "Mario", url: "https://xpixelcoderx.github.io/games/mario/", icon: "fa-hat-cowboy", category: "Platform" },
+      { name: "Marvin Spectrum", url: "https://xpixelcoderx.github.io/games/marvinspectrum/", icon: "fa-palette", category: "Puzzle" },
+      { name: "Matrix Rampage", url: "https://xpixelcoderx.github.io/games/matrixrampage/", icon: "fa-biohazard", category: "Action" },
+      { name: "Minecraft 1.5.2", url: "https://xpixelcoderx.github.io/games/mc1.5.2/", icon: "fa-cube", category: "Sandbox" },
+      { name: "Minecraft Beta 0.30", url: "https://xpixelcoderx.github.io/games/mcbeta0.30/", icon: "fa-cube", category: "Sandbox" },
+      { name: "Minecraft Beta 1.3", url: "https://xpixelcoderx.github.io/games/mcbeta1.3/", icon: "fa-cube", category: "Sandbox" },
+      { name: "Meat Boy", url: "https://xpixelcoderx.github.io/games/meat-boy/", icon: "fa-drumstick-bite", category: "Platform" },
+      { name: "Meme 2048", url: "https://xpixelcoderx.github.io/games/meme2048/", icon: "fa-th-large", category: "Puzzle" },
+      { name: "Minecraft Classic", url: "https://xpixelcoderx.github.io/games/minecraft-classic/", icon: "fa-cube", category: "Sandbox" },
+      { name: "Minecraft", url: "https://xpixelcoderx.github.io/games/minecraft/", icon: "fa-cube", category: "Sandbox" },
+      { name: "Minecraft Beta", url: "https://xpixelcoderx.github.io/games/minecraftbeta/", icon: "fa-cube", category: "Sandbox" },
+      { name: "Minesweeper", url: "https://xpixelcoderx.github.io/games/minesweeper/", icon: "fa-bomb", category: "Puzzle" },
+      { name: "Mini Stilts", url: "https://xpixelcoderx.github.io/games/mini-stilts/", icon: "fa-shoe-prints", category: "Arcade" },
+      { name: "Mini Putt", url: "https://xpixelcoderx.github.io/games/miniputt/", icon: "fa-golf-ball", category: "Sports" },
+      { name: "Missiles", url: "https://xpixelcoderx.github.io/games/missiles/", icon: "fa-meteor", category: "Arcade" },
+      { name: "Moto X3M 2", url: "https://xpixelcoderx.github.io/games/moto-x3m-2/", icon: "fa-motorcycle", category: "Racing" },
+      { name: "Moto X3M Pool Party", url: "https://xpixelcoderx.github.io/games/moto-x3m-pool-party/", icon: "fa-swimming-pool", category: "Racing" },
+      { name: "Moto X3M Pool", url: "https://xpixelcoderx.github.io/games/motox3m-pool/", icon: "fa-swimming-pool", category: "Racing" },
+      { name: "Moto X3M Spooky", url: "https://xpixelcoderx.github.io/games/motox3m-spooky/", icon: "fa-ghost", category: "Racing" },
+      { name: "Moto X3M Winter", url: "https://xpixelcoderx.github.io/games/motox3m-winter/", icon: "fa-snowflake", category: "Racing" },
+      { name: "Moto X3M", url: "https://xpixelcoderx.github.io/games/motox3m/", icon: "fa-motorcycle", category: "Racing" },
+      { name: "My Friend Pedro", url: "https://xpixelcoderx.github.io/games/my-friend-pedro/", icon: "fa-user", category: "Action" },
+      { name: "N-Gon", url: "https://xpixelcoderx.github.io/games/n-gon/", icon: "fa-shapes", category: "Puzzle" },
+      { name: "Ninja", url: "https://xpixelcoderx.github.io/games/ninja/", icon: "fa-user-ninja", category: "Action" },
+      { name: "Ninja vs Evil Corp", url: "https://xpixelcoderx.github.io/games/ninjavsevilcorp/", icon: "fa-user-ninja", category: "Action" },
+      { name: "NS Shaft", url: "https://xpixelcoderx.github.io/games/ns-shaft/", icon: "fa-arrows-alt-v", category: "Arcade" },
+      { name: "Om Bounce", url: "https://xpixelcoderx.github.io/games/om-bounce/", icon: "fa-circle", category: "Arcade" },
+      { name: "One Screen Run 2", url: "https://xpixelcoderx.github.io/games/one-screen-run-2/", icon: "fa-running", category: "Platform" },
+      { name: "One Screen Run", url: "https://xpixelcoderx.github.io/games/one-screen-run/", icon: "fa-running", category: "Platform" },
+      { name: "Osu", url: "https://xpixelcoderx.github.io/games/osu/", icon: "fa-music", category: "Rhythm" },
+      { name: "Ovo", url: "https://xpixelcoderx.github.io/games/ovo/", icon: "fa-egg", category: "Arcade" },
+      { name: "Pack a Bunch As", url: "https://xpixelcoderx.github.io/games/packabunchas/", icon: "fa-box", category: "Puzzle" },
+      { name: "Pacman FPS", url: "https://xpixelcoderx.github.io/games/pacman-fps/", icon: "fa-ghost", category: "Shooter" },
+      { name: "Pacman", url: "https://xpixelcoderx.github.io/games/pacman/", icon: "fa-ghost", category: "Arcade" },
+      { name: "Pandemic 2", url: "https://xpixelcoderx.github.io/games/pandemic2/", icon: "fa-virus", category: "Strategy" },
+      { name: "Papa Louie", url: "https://xpixelcoderx.github.io/games/papa-louie/", icon: "fa-utensils", category: "Cooking" },
+      { name: "Papa's Burgeria", url: "https://xpixelcoderx.github.io/games/papas-burgeria/", icon: "fa-hamburger", category: "Cooking" },
+      { name: "Papa's Freezeria", url: "https://xpixelcoderx.github.io/games/papas-freezeria/", icon: "fa-ice-cream", category: "Cooking" },
+      { name: "Papa's Hot Doggeria", url: "https://xpixelcoderx.github.io/games/papas-hot-doggeria/", icon: "fa-hotdog", category: "Cooking" },
+      { name: "Papa's Pancakeria", url: "https://xpixelcoderx.github.io/games/papas-pancakeria/", icon: "fa-pancakes", category: "Cooking" },
+      { name: "Papa's Pizzeria", url: "https://xpixelcoderx.github.io/games/papas-pizzeria/", icon: "fa-pizza-slice", category: "Cooking" },
+      { name: "Papa's Sushiria", url: "https://xpixelcoderx.github.io/games/papas-sushiria/", icon: "fa-fish", category: "Cooking" },
+      { name: "Papa's Wingeria", url: "https://xpixelcoderx.github.io/games/papas-wingeria/", icon: "fa-drumstick-bite", category: "Cooking" },
+      { name: "Paper.io 2", url: "https://xpixelcoderx.github.io/games/paperio2/", icon: "fa-paper-plane", category: "Strategy" },
+      { name: "Papery Planes", url: "https://xpixelcoderx.github.io/games/papery-planes/", icon: "fa-paper-plane", category: "Arcade" },
+      { name: "Particle Clicker", url: "https://xpixelcoderx.github.io/games/particle-clicker/", icon: "fa-atom", category: "Clicker" },
+      { name: "Path Finder", url: "https://xpixelcoderx.github.io/games/path-finder/", icon: "fa-route", category: "Puzzle" },
+      { name: "Pe Noire", url: "https://xpixelcoderx.github.io/games/pe-noire/", icon: "fa-search", category: "Adventure" },
+      { name: "Pikwip", url: "https://xpixelcoderx.github.io/games/pikwip/", icon: "fa-puzzle-piece", category: "Puzzle" },
+      { name: "Pixel Cave", url: "https://xpixelcoderx.github.io/games/pixel-cave/", icon: "fa-mountain", category: "Adventure" },
+      { name: "Pizzeria Simulator", url: "https://xpixelcoderx.github.io/games/pizzeria-simulator/", icon: "fa-pizza-slice", category: "Simulation" },
+      { name: "Polybranch", url: "https://xpixelcoderx.github.io/games/polybranch/", icon: "fa-code-branch", category: "Puzzle" },
+      { name: "Popcat Classic", url: "https://xpixelcoderx.github.io/games/popcat-classic/", icon: "fa-cat", category: "Funny" },
+      { name: "Portal Flash", url: "https://xpixelcoderx.github.io/games/portalflash/", icon: "fa-door-open", category: "Puzzle" },
+      { name: "Precision Client", url: "https://xpixelcoderx.github.io/games/precision-client/", icon: "fa-crosshairs", category: "Shooter" },
+      { name: "Protektor", url: "https://xpixelcoderx.github.io/games/protektor/", icon: "fa-shield-alt", category: "Action" },
+      { name: "Push the Square", url: "https://xpixelcoderx.github.io/games/push-the-square/", icon: "fa-square", category: "Puzzle" },
+      { name: "Push Your Luck", url: "https://xpixelcoderx.github.io/games/push-your-luck/", icon: "fa-dice", category: "Puzzle" },
+      { name: "Pushback", url: "https://xpixelcoderx.github.io/games/pushback/", icon: "fa-arrows-alt-h", category: "Puzzle" },
+      { name: "Puzzle Ball", url: "https://xpixelcoderx.github.io/games/puzzle-ball/", icon: "fa-basketball-ball", category: "Puzzle" },
+      { name: "Plants vs Zombies 2", url: "https://xpixelcoderx.github.io/games/pvz-2/", icon: "fa-leaf", category: "Strategy" },
+      { name: "Q1K3", url: "https://xpixelcoderx.github.io/games/q1k3/", icon: "fa-question", category: "Puzzle" },
+      { name: "Racer", url: "https://xpixelcoderx.github.io/games/racer/", icon: "fa-car", category: "Racing" },
+      { name: "Radius Raid", url: "https://xpixelcoderx.github.io/games/radiusraid/", icon: "fa-crosshairs", category: "Shooter" },
+      { name: "Retro Bowl", url: "https://xpixelcoderx.github.io/games/retro-bowl/", icon: "fa-football", category: "Sports" },
+      { name: "Retrohaunt", url: "https://xpixelcoderx.github.io/games/retrohaunt/", icon: "fa-ghost", category: "Arcade" },
+      { name: "Rise of Neon Square", url: "https://xpixelcoderx.github.io/games/rise-of-neon-square/", icon: "fa-square", category: "Arcade" },
+      { name: "Roadblocks", url: "https://xpixelcoderx.github.io/games/roadblocks/", icon: "fa-road", category: "Puzzle" },
+      { name: "Rocking Sky Trip", url: "https://xpixelcoderx.github.io/games/rocking-sky-trip/", icon: "fa-cloud", category: "Arcade" },
+      { name: "Rolling Forests", url: "https://xpixelcoderx.github.io/games/rolling-forests/", icon: "fa-tree", category: "Arcade" },
+      { name: "Rolly Vortex", url: "https://xpixelcoderx.github.io/games/rolly-vortex/", icon: "fa-circle", category: "Arcade" },
+      { name: "Rooftop Snipers", url: "https://xpixelcoderx.github.io/games/rooftop-snipers/", icon: "fa-crosshairs", category: "Shooter" },
+      { name: "Run 3", url: "https://xpixelcoderx.github.io/games/run-3/", icon: "fa-running", category: "Platform" },
+      { name: "Sand Game", url: "https://xpixelcoderx.github.io/games/sand-game/", icon: "fa-hourglass", category: "Simulation" },
+      { name: "Sandboxels", url: "https://xpixelcoderx.github.io/games/sandboxels/", icon: "fa-th-large", category: "Simulation" },
+      { name: "Scrambled Eggs", url: "https://xpixelcoderx.github.io/games/scrambled-eggs/", icon: "fa-egg", category: "Puzzle" },
+      { name: "Scrap Metal", url: "https://xpixelcoderx.github.io/games/scrapmetal/", icon: "fa-cogs", category: "Action" },
+      { name: "Senya and Oscar 2", url: "https://xpixelcoderx.github.io/games/senya-and-oscar-2/", icon: "fa-user", category: "Adventure" },
+      { name: "SG", url: "https://xpixelcoderx.github.io/games/sg/", icon: "fa-question", category: "Puzzle" },
+      { name: "Shadow World Adventure", url: "https://xpixelcoderx.github.io/games/shadow-world-adventure/", icon: "fa-moon", category: "Adventure" },
+      { name: "Shards", url: "https://xpixelcoderx.github.io/games/shards/", icon: "fa-gem", category: "Puzzle" },
+      { name: "Shift Flash 2", url: "https://xpixelcoderx.github.io/games/shift-flash-2/", icon: "fa-bolt", category: "Puzzle" },
+      { name: "Shift Flash", url: "https://xpixelcoderx.github.io/games/shift-flash/", icon: "fa-bolt", category: "Puzzle" },
+      { name: "Short Life 2", url: "https://xpixelcoderx.github.io/games/short-life-2/", icon: "fa-running", category: "Platform" },
+      { name: "Short Ride", url: "https://xpixelcoderx.github.io/games/short-ride/", icon: "fa-car", category: "Racing" },
+      { name: "Shuttledeck", url: "https://xpixelcoderx.github.io/games/shuttledeck/", icon: "fa-space-shuttle", category: "Puzzle" },
+      { name: "Skyblock", url: "https://xpixelcoderx.github.io/games/skyblock/", icon: "fa-cloud", category: "Sandbox" },
+      { name: "Sleeping Beauty", url: "https://xpixelcoderx.github.io/games/sleepingbeauty/", icon: "fa-bed", category: "Puzzle" },
+      { name: "Slice of Sasha", url: "https://xpixelcoderx.github.io/games/slice-of-sasha/", icon: "fa-user", category: "Adventure" },
+      { name: "Slither Snake", url: "https://xpixelcoderx.github.io/games/slither-snake/", icon: "fa-snake", category: "Arcade" },
+      { name: "Slither", url: "https://xpixelcoderx.github.io/games/slither/", icon: "fa-snake", category: "Arcade" },
+      { name: "Slope Ball", url: "https://xpixelcoderx.github.io/games/slope-ball/", icon: "fa-basketball-ball", category: "Arcade" },
+      { name: "Slope", url: "https://xpixelcoderx.github.io/games/slope/", icon: "fa-chart-line", category: "Arcade" },
+      { name: "Slope 2", url: "https://xpixelcoderx.github.io/games/slope2/", icon: "fa-chart-line", category: "Arcade" },
+      { name: "Super Mario 63", url: "https://xpixelcoderx.github.io/games/sm63/", icon: "fa-hat-cowboy", category: "Platform" },
+      { name: "Super Mario 64", url: "https://xpixelcoderx.github.io/games/sm64/", icon: "fa-hat-cowboy", category: "Platform" },
+      { name: "Smash Karts", url: "https://xpixelcoderx.github.io/games/smashkarts/", icon: "fa-car", category: "Racing" },
+      { name: "Smoking Barrels", url: "https://xpixelcoderx.github.io/games/smokingbarrels/", icon: "fa-gun", category: "Shooter" },
+      { name: "Snake", url: "https://xpixelcoderx.github.io/games/snake/", icon: "fa-snake", category: "Arcade" },
+      { name: "Snowbattle", url: "https://xpixelcoderx.github.io/games/snowbattle/", icon: "fa-snowflake", category: "Action" },
+      { name: "Soldier Legend", url: "https://xpixelcoderx.github.io/games/soldier-legend/", icon: "fa-user", category: "Action" },
+      { name: "Solitaire", url: "https://xpixelcoderx.github.io/games/solitaire/", icon: "fa-cards", category: "Card" },
+      { name: "Sonic the Hedgehog", url: "https://xpixelcoderx.github.io/games/sonic-the-hedgehog/", icon: "fa-running", category: "Platform" },
+      { name: "Sort the Court", url: "https://xpixelcoderx.github.io/games/sort-the-court/", icon: "fa-crown", category: "Puzzle" },
+      { name: "Soundboard", url: "https://xpixelcoderx.github.io/games/soundboard/", icon: "fa-music", category: "Music" },
+      { name: "Space Company", url: "https://xpixelcoderx.github.io/games/space-company/", icon: "fa-building", category: "Simulation" },
+      { name: "Space Garden", url: "https://xpixelcoderx.github.io/games/spacegarden/", icon: "fa-seedling", category: "Simulation" },
+      { name: "Space Huggers", url: "https://xpixelcoderx.github.io/games/spacehuggers/", icon: "fa-user-astronaut", category: "Action" },
+      { name: "Spelunky", url: "https://xpixelcoderx.github.io/games/spelunky/", icon: "fa-gem", category: "Adventure" },
+      { name: "SSF", url: "https://xpixelcoderx.github.io/games/ssf/", icon: "fa-question", category: "Puzzle" },
+      { name: "Stack Bump 3D", url: "https://xpixelcoderx.github.io/games/stack-bump-3d/", icon: "fa-cube", category: "Arcade" },
+      { name: "Stack", url: "https://xpixelcoderx.github.io/games/stack/", icon: "fa-cube", category: "Arcade" },
+      { name: "Station 141", url: "https://xpixelcoderx.github.io/games/station-141/", icon: "fa-building", category: "Adventure" },
+      { name: "Stealing the Diamond", url: "https://xpixelcoderx.github.io/games/stealingthediamond/", icon: "fa-gem", category: "Puzzle" },
+      { name: "Stick Archers Battle", url: "https://xpixelcoderx.github.io/games/stick-archers-battle/", icon: "fa-bullseye", category: "Action" },
+      { name: "Stick Climb", url: "https://xpixelcoderx.github.io/games/stickclimb/", icon: "fa-arrows-alt-v", category: "Arcade" },
+      { name: "Stickman Boost", url: "https://xpixelcoderx.github.io/games/stickman-boost/", icon: "fa-rocket", category: "Action" },
+      { name: "Stickman Dismount", url: "https://xpixelcoderx.github.io/games/stickman-dismount/", icon: "fa-user", category: "Action" },
+      { name: "Stickman Epic Battle", url: "https://xpixelcoderx.github.io/games/stickman-epic-battle/", icon: "fa-user", category: "Action" },
+      { name: "Stickman Golf", url: "https://xpixelcoderx.github.io/games/stickman-golf/", icon: "fa-golf-ball", category: "Sports" },
+      { name: "Stickman", url: "https://xpixelcoderx.github.io/games/stickman/", icon: "fa-user", category: "Action" },
+      { name: "Stick War", url: "https://xpixelcoderx.github.io/games/stickwar/", icon: "fa-chess", category: "Strategy" },
+      { name: "Storm the House 2", url: "https://xpixelcoderx.github.io/games/stormthehouse2/", icon: "fa-house", category: "Strategy" },
+      { name: "Subway Surfers Bali", url: "https://xpixelcoderx.github.io/games/subway-surfers-bali/", icon: "fa-train-subway", category: "Arcade" },
+      { name: "Subway Surfers", url: "https://xpixelcoderx.github.io/games/subway-surfers/", icon: "fa-train-subway", category: "Arcade" },
+      { name: "Super Mario Maker Online", url: "https://xpixelcoderx.github.io/games/super-mario-maker-online/", icon: "fa-hat-cowboy", category: "Platform" },
+      { name: "Super Puffer Fish 3D", url: "https://xpixelcoderx.github.io/games/super-puffer-fish-3d/", icon: "fa-fish", category: "Arcade" },
+      { name: "Superhero IO", url: "https://xpixelcoderx.github.io/games/superhero-io/", icon: "fa-mask", category: "Action" },
+      { name: "Superhot", url: "https://xpixelcoderx.github.io/games/superhot/", icon: "fa-crosshairs", category: "Shooter" },
+      { name: "Super Mario Construct", url: "https://xpixelcoderx.github.io/games/supermarioconstruct/", icon: "fa-hat-cowboy", category: "Platform" },
+      { name: "Swerve", url: "https://xpixelcoderx.github.io/games/swerve/", icon: "fa-arrows-alt-h", category: "Arcade" },
+      { name: "Synesthesia", url: "https://xpixelcoderx.github.io/games/synesthesia/", icon: "fa-music", category: "Puzzle" },
+      { name: "Tactical Weapon Pack 2", url: "https://xpixelcoderx.github.io/games/tactical-weapon-pack-2/", icon: "fa-gun", category: "Shooter" },
+      { name: "Tactical Assassin 2", url: "https://xpixelcoderx.github.io/games/tacticalassasin2/", icon: "fa-user-secret", category: "Action" },
+      { name: "Tail of the Dragon", url: "https://xpixelcoderx.github.io/games/tail-of-the-dragon/", icon: "fa-dragon", category: "Racing" },
+      { name: "TAM Indian Truck Simulator 3D", url: "https://xpixelcoderx.github.io/games/tam-indian-truck-simulator-3d/", icon: "fa-truck", category: "Simulation" },
+      { name: "Tank Trouble 2", url: "https://xpixelcoderx.github.io/games/tank-trouble-2/", icon: "fa-tank", category: "Action" },
+      { name: "Tanuki Sunset", url: "https://xpixelcoderx.github.io/games/tanuki-sunset/", icon: "fa-sun", category: "Racing" },
+      { name: "Temple Run 2", url: "https://xpixelcoderx.github.io/games/temple-run-2/", icon: "fa-running", category: "Arcade" },
+      { name: "Tetris", url: "https://xpixelcoderx.github.io/games/tetris/", icon: "fa-th-large", category: "Puzzle" },
+      { name: "The Final Earth 2", url: "https://xpixelcoderx.github.io/games/the-final-earth-2/", icon: "fa-globe", category: "Simulation" },
+      { name: "The Final Earth", url: "https://xpixelcoderx.github.io/games/the-final-earth/", icon: "fa-globe", category: "Simulation" },
+      { name: "The Impossible Quiz 2", url: "https://xpixelcoderx.github.io/games/the-impossible-quiz-2/", icon: "fa-question", category: "Puzzle" },
+      { name: "The Impossible Quiz", url: "https://xpixelcoderx.github.io/games/the-impossible-quiz/", icon: "fa-question", category: "Puzzle" },
+      { name: "The Little Giant", url: "https://xpixelcoderx.github.io/games/the-little-giant/", icon: "fa-user", category: "Adventure" },
+      { name: "The Battle", url: "https://xpixelcoderx.github.io/games/thebattle/", icon: "fa-crosshairs", category: "Action" },
+      { name: "The Heist", url: "https://xpixelcoderx.github.io/games/theheist/", icon: "fa-gem", category: "Puzzle" },
+      { name: "The Maze of Space Goblins", url: "https://xpixelcoderx.github.io/games/themazeofspacegoblins/", icon: "fa-dungeon", category: "Adventure" },
+      { name: "There Is No Game", url: "https://xpixelcoderx.github.io/games/there-is-no-game/", icon: "fa-gamepad", category: "Puzzle" },
+      { name: "This Is the Only Level", url: "https://xpixelcoderx.github.io/games/thisistheonlylevel/", icon: "fa-arrow-right", category: "Puzzle" },
+      { name: "Time Shooter 3", url: "https://xpixelcoderx.github.io/games/time-shooter-3/", icon: "fa-clock", category: "Shooter" },
+      { name: "Tiny Fishing", url: "https://xpixelcoderx.github.io/games/tiny-fishing/", icon: "fa-fish", category: "Simulation" },
+      { name: "Tiny Fragments", url: "https://xpixelcoderx.github.io/games/tiny-fragments/", icon: "fa-puzzle-piece", category: "Puzzle" },
+      { name: "Tiny Islands", url: "https://xpixelcoderx.github.io/games/tiny-islands/", icon: "fa-water", category: "Puzzle" },
+      { name: "Topple Adventure", url: "https://xpixelcoderx.github.io/games/topple-adventure/", icon: "fa-mountain", category: "Platform" },
+      { name: "Toss the Turtle", url: "https://xpixelcoderx.github.io/games/tosstheturtle/", icon: "fa-turtle", category: "Arcade" },
+      { name: "Tough Growth", url: "https://xpixelcoderx.github.io/games/tough-growth/", icon: "fa-seedling", category: "Strategy" },
+      { name: "Tower Master", url: "https://xpixelcoderx.github.io/games/towermaster/", icon: "fa-building", category: "Strategy" },
+      { name: "Townscaper", url: "https://xpixelcoderx.github.io/games/townscaper/", icon: "fa-city", category: "Creative" },
+      { name: "Trimps", url: "https://xpixelcoderx.github.io/games/trimps/", icon: "fa-user", category: "Strategy" },
+      { name: "Tube Jumpers", url: "https://xpixelcoderx.github.io/games/tube-jumpers/", icon: "fa-users", category: "Arcade" },
+      { name: "Tunnel Rush", url: "https://xpixelcoderx.github.io/games/tunnel-rush/", icon: "fa-road", category: "Arcade" },
+      { name: "Tunnelz", url: "https://xpixelcoderx.github.io/games/tunnelz/", icon: "fa-road", category: "Arcade" },
+      { name: "TV Static", url: "https://xpixelcoderx.github.io/games/tv-static/", icon: "fa-tv", category: "Funny" },
+      { name: "Twitch Tetris", url: "https://xpixelcoderx.github.io/games/twitch-tetris/", icon: "fa-th-large", category: "Puzzle" },
+      { name: "Underrun", url: "https://xpixelcoderx.github.io/games/underrun/", icon: "fa-running", category: "Action" },
+      { name: "Unfold 2", url: "https://xpixelcoderx.github.io/games/unfold-2/", icon: "fa-square", category: "Puzzle" },
+      { name: "Up Left Out", url: "https://xpixelcoderx.github.io/games/up-left-out/", icon: "fa-arrow-up", category: "Puzzle" },
+      { name: "Veloce", url: "https://xpixelcoderx.github.io/games/veloce/", icon: "fa-car", category: "Racing" },
+      { name: "Vex 3", url: "https://xpixelcoderx.github.io/games/vex3/", icon: "fa-running", category: "Platform" },
+      { name: "Vex 4", url: "https://xpixelcoderx.github.io/games/vex4/", icon: "fa-running", category: "Platform" },
+      { name: "Vex 5", url: "https://xpixelcoderx.github.io/games/vex5/", icon: "fa-running", category: "Platform" },
+      { name: "Vex 6", url: "https://xpixelcoderx.github.io/games/vex6/", icon: "fa-running", category: "Platform" },
+      { name: "Vex 7", url: "https://xpixelcoderx.github.io/games/vex7/", icon: "fa-running", category: "Platform" },
+      { name: "Waterworks", url: "https://xpixelcoderx.github.io/games/waterworks/", icon: "fa-tint", category: "Puzzle" },
+      { name: "Webretro", url: "https://xpixelcoderx.github.io/games/webretro/", icon: "fa-gamepad", category: "Emulator" },
+      { name: "Winter Falling Price", url: "https://xpixelcoderx.github.io/games/winter-falling-price/", icon: "fa-snowflake", category: "Puzzle" },
+      { name: "Wipo", url: "https://xpixelcoderx.github.io/games/wipo/", icon: "fa-question", category: "Puzzle" },
+      { name: "Wolf 3D", url: "https://xpixelcoderx.github.io/games/wolf3d/", icon: "fa-wolf", category: "Shooter" },
+      { name: "Wordle", url: "https://xpixelcoderx.github.io/games/wordle/", icon: "fa-font", category: "Puzzle" },
+      { name: "World's Hardest Game 2", url: "https://xpixelcoderx.github.io/games/worlds-hardest-game-2/", icon: "fa-gamepad", category: "Puzzle" },
+      { name: "World's Hardest Game", url: "https://xpixelcoderx.github.io/games/worlds-hardest-game/", icon: "fa-gamepad", category: "Puzzle" },
+      { name: "X Trial Racing", url: "https://xpixelcoderx.github.io/games/x-trial-racing/", icon: "fa-car", category: "Racing" },
+      { name: "xx142-b2exe", url: "https://xpixelcoderx.github.io/games/xx142-b2exe/", icon: "fa-desktop", category: "Puzzle" },
+      { name: "Yoshi Fabrication", url: "https://xpixelcoderx.github.io/games/yoshifabrication/", icon: "fa-dragon", category: "Platform" },
+      { name: "You Are Bezos", url: "https://xpixelcoderx.github.io/games/you-are-bezos/", icon: "fa-dollar-sign", category: "Simulation" },
+      { name: "Zig Zag", url: "https://xpixelcoderx.github.io/games/zig-zag/", icon: "fa-route", category: "Arcade" },
+      { name: "Zombocalypse", url: "https://xpixelcoderx.github.io/games/zombocalypse/", icon: "fa-skull", category: "Action" },
+      { name: "Zombs Royale", url: "https://xpixelcoderx.github.io/games/zombs-royale/", icon: "fa-crosshairs", category: "Shooter" }
+    ];
+
+    const apps = [
+      { 
+        name: "YouTube", 
+        url: "https://www.youtube.com/embed/?enablejsapi=1", 
+        icon: "fa-youtube", 
+        category: "Video",
+        description: "Embed YouTube videos on your website" 
+      },
+      { 
+        name: "Spotify", 
+        url: "https://open.spotify.com/embed/", 
+        icon: "fa-spotify", 
+        category: "Music",
+        description: "Embed Spotify music and podcasts" 
+      },
+      { 
+        name: "Google Drive", 
+        url: "https://drive.google.com/embeddedfolderview?id=0B0Rl8JUK0Q8efkZ0b3B5VzBMM1VqV19oWlBfLTJ3LXpJYlJfV2tqWGNILU5CLUw0LVljMk0&resourcekey=0-7eU0XRa3lZ3qy3qX2q6q0Q", 
+        icon: "fa-google-drive", 
+        category: "Storage",
+        description: "Access and share your Google Drive files" 
+      },
+      { 
+        name: "Discord", 
+        url: "https://discord.com/widget?id=0&theme=dark", 
+        icon: "fa-discord", 
+        category: "Communication",
+        description: "Embed Discord chat widget" 
+      },
+      { 
+        name: "Twitter", 
+        url: "https://platform.twitter.com/embed/Tweet.html?dnt=false&embedId=twitter-widget-0", 
+        icon: "fa-twitter", 
+        category: "Social",
+        description: "Embed Twitter feeds and tweets" 
+      },
+      { 
+        name: "Google Maps", 
+        url: "https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=Space+Needle,Seattle+WA", 
+        icon: "fa-map", 
+        category: "Navigation",
+        description: "Embed Google Maps on your website" 
+      },
+      { 
+        name: "Twitch", 
+        url: "https://player.twitch.tv/?channel=twitch&parent=YOUR_DOMAIN", 
+        icon: "fa-twitch", 
+        category: "Streaming",
+        description: "Embed Twitch live streams" 
+      },
+      { 
+        name: "SoundCloud", 
+        url: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/0&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true", 
+        icon: "fa-soundcloud", 
+        category: "Music",
+        description: "Embed SoundCloud audio tracks" 
+      },
+      { 
+        name: "Vimeo", 
+        url: "https://player.vimeo.com/video/0?h=0&title=0&byline=0&portrait=0", 
+        icon: "fa-vimeo", 
+        category: "Video",
+        description: "Embed Vimeo videos" 
+      },
+      { 
+        name: "Facebook", 
+        url: "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Ffacebook%2Fposts%2F0&width=500&show_text=true&height=0&appId", 
+        icon: "fa-facebook", 
+        category: "Social",
+        description: "Embed Facebook posts and content" 
+      }
+    ];
+
+    function initGameGrid() {
+      const gameGrid = document.getElementById('gameGrid');
+      gameGrid.innerHTML = '';
+
+      games.forEach(game => {
+        const gameCard = document.createElement('div');
+        gameCard.className = 'game-card';
+        gameCard.onclick = () => openGame(game.url);
+
+        gameCard.innerHTML = `
+          <div class="game-logo">
+            <i class="fas ${game.icon}"></i>
+          </div>
+          <div class="game-title">${game.name}</div>
+          <div class="game-category">${game.category}</div>
+        `;
+
+        gameGrid.appendChild(gameCard);
+      });
+
+      document.getElementById('totalGames').textContent = games.length;
+      document.getElementById('showingGames').textContent = games.length;
+    }
+
+    function initAppGrid() {
+      const appGrid = document.getElementById('appGrid');
+      appGrid.innerHTML = '';
+
+      apps.forEach(app => {
+        const appCard = document.createElement('div');
+        appCard.className = 'app-card';
+        appCard.onclick = () => openGame(app.url);
+
+        appCard.innerHTML = `
+          <div class="app-logo">
+            <i class="fab ${app.icon}"></i>
+          </div>
+          <div class="app-title">${app.name}</div>
+          <div class="app-category">${app.category}</div>
+        `;
+
+        appGrid.appendChild(appCard);
+      });
+
+      document.getElementById('totalApps').textContent = apps.length;
+      document.getElementById('showingApps').textContent = apps.length;
+    }
+
+    function switchTab(tabName) {
+
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+      });
+
+      document.getElementById('gameSearch').style.display = 'none';
+      document.getElementById('appSearch').style.display = 'none';
+      document.getElementById('gameStats').style.display = 'none';
+      document.getElementById('appStats').style.display = 'none';
+
+      document.getElementById(tabName + 'Tab').classList.add('active');
+      document.querySelector(`.tab-button:nth-child(${tabName === 'games' ? 1 : 2})`).classList.add('active');
+
+      document.getElementById(tabName + 'Search').style.display = 'block';
+      document.getElementById(tabName + 'Stats').style.display = 'block';
+
+      if (tabName === 'apps' && document.getElementById('appGrid').innerHTML === '') {
+        initAppGrid();
+      }
+    }
+
+    function openGame(url) {
+      document.getElementById('gameFrame').src = url;
+      document.getElementById('overlay').style.display = 'flex';
+    }
+
+    function closeGame() {
+      document.getElementById('gameFrame').src = "";
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    function toggleFullscreen() {
+      const iframe = document.getElementById('gameFrame');
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.mozRequestFullScreen) {
+        iframe.mozRequestFullScreen();
+      } else if (iframe.webkitRequestFullscreen) {
+        iframe.webkitRequestfullscreen();
+      } else if (iframe.msRequestFullscreen) {
+        iframe.msRequestFullscreen();
+      }
+    }
+
+    function searchGames() {
+      let input = document.getElementById('gameSearch').value.toLowerCase();
+      let cards = document.getElementsByClassName('game-card');
+      let showingCount = 0;
+
+      for (let i = 0; i < cards.length; i++) {
+        let gameName = cards[i].getElementsByClassName('game-title')[0].textContent.toLowerCase();
+        if (gameName.includes(input)) {
+          cards[i].style.display = "";
+          showingCount++;
+        } else {
+          cards[i].style.display = "none";
+        }
+      }
+
+      document.getElementById('showingGames').textContent = showingCount;
+    }
+
+    function searchApps() {
+      let input = document.getElementById('appSearch').value.toLowerCase();
+      let cards = document.getElementsByClassName('app-card');
+      let showingCount = 0;
+
+      for (let i = 0; i < cards.length; i++) {
+        let appName = cards[i].getElementsByClassName('app-title')[0].textContent.toLowerCase();
+        if (appName.includes(input)) {
+          cards[i].style.display = "";
+          showingCount++;
+        } else {
+          cards[i].style.display = "none";
+        }
+      }
+
+      document.getElementById('showingApps').textContent = showingCount;
+    }
+
+    window.onload = function() {
+      initGameGrid();
+
+    };
+  </script>
+</body>
+</html>
