@@ -1,799 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CorePortals 🚀</title>
-  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --dark-bg: #0d0d0e;
-      --darker-bg: #070709;
-      --card-bg: #151518;
-      --accent: #a85cff;
-      --accent-glow: 0 0 10px rgba(168, 92, 255, 0.7);
-      --text-primary: #f0f0f0;
-      --text-secondary: #a0a0a0;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(ellipse at center, #050007 0%, #000 70%);
-      overflow: auto;
-      font-family: 'Lexend', sans-serif;
-      color: var(--text-primary);
-    }
-
-    #particles-js {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .scene {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    .center {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 100%;
-      height: 100%;
-    }
-
-    .orbit {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform-origin: center center;
-    }
-
-    .planet-wrap {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform-origin: center center;
-      pointer-events: none;
-    }
-
-    .planet {
-      position: absolute;
-      border-radius: 50%;
-      overflow: hidden;
-    }
-
-    .planet::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.4), transparent 60%);
-      mix-blend-mode: overlay;
-    }
-
-    .atmosphere {
-      position: absolute;
-      inset: -20px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(168, 92, 255, 0.25), transparent 70%);
-      filter: blur(12px);
-    }
-
-    .planet-1 {
-      width: 150px;
-      height: 150px;
-      margin: -75px 0 0 -75px;
-      background: radial-gradient(circle at 25% 30%, var(--accent), #6f32b6);
-    }
-
-    .planet-2 {
-      width: 100px;
-      height: 100px;
-      margin: -50px 0 0 -50px;
-      background: radial-gradient(circle at 40% 35%, #4ac6ff, #1a2a72);
-    }
-
-    .planet-3 {
-      width: 200px;
-      height: 200px;
-      margin: -100px 0 0 -100px;
-      background: radial-gradient(circle at 20% 30%, #d2c6ff, #6f32b6);
-    }
-
-    .planet-4 {
-      width: 70px;
-      height: 70px;
-      margin: -35px 0 0 -35px;
-      background: radial-gradient(circle at 35% 35%, #8af, #1a2a72);
-    }
-
-    .ring {
-      position: absolute;
-      width: 260px;
-      height: 36px;
-      margin: -18px 0 0 -130px;
-      border-radius: 50%;
-      background: radial-gradient(ellipse at center, rgba(168, 92, 255, 0.5) 0%, rgba(60, 30, 100, 0.1) 70%, transparent 100%);
-      transform: rotateX(65deg);
-      box-shadow: 0 0 20px rgba(168, 92, 255, 0.4);
-    }
-
-    .moon {
-      position: absolute;
-      border-radius: 50%;
-      width: 16px;
-      height: 16px;
-      background: radial-gradient(circle at 30% 30%, #eee, #777);
-      box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
-    }
-
-    @keyframes orbitVerySlow {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes orbitSlow {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes orbitMedium {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes orbitFast {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .orbit-1 {
-      width: 360px;
-      height: 360px;
-      margin: -180px 0 0 -180px;
-      animation: orbitSlow 150s linear infinite;
-    }
-
-    .orbit-2 {
-      width: 260px;
-      height: 260px;
-      margin: -130px 0 0 -130px;
-      animation: orbitMedium 100s linear infinite;
-    }
-
-    .orbit-3 {
-      width: 560px;
-      height: 560px;
-      margin: -280px 0 0 -280px;
-      animation: orbitVerySlow 240s linear infinite;
-    }
-
-    .orbit-4 {
-      width: 140px;
-      height: 140px;
-      margin: -70px 0 0 -70px;
-      animation: orbitFast 70s linear infinite;
-    }
-
-    .planet-wrap.pw-1 {
-      transform: translateX(180px);
-    }
-
-    .planet-wrap.pw-2 {
-      transform: translateX(-130px);
-    }
-
-    .planet-wrap.pw-3 {
-      transform: translateX(280px);
-    }
-
-    .planet-wrap.pw-4 {
-      transform: translateX(-70px);
-    }
-
-    .ufo {
-      position: absolute;
-      width: 32px;
-      height: 14px;
-      border-radius: 16px;
-      background: linear-gradient(90deg, #caa3ff, #4ac6ff);
-      box-shadow: 0 6px 18px rgba(120, 50, 170, 0.25);
-      top: 20%;
-      left: -10%;
-      animation: ufoFly 45s linear infinite;
-    }
-
-    @keyframes ufoFly {
-      0% { left: -10%; opacity: 0; }
-      15% { opacity: 1; }
-      50% { left: 110%; top: 25%; opacity: 1; }
-      70% { opacity: 0; }
-      100% { left: 110%; opacity: 0; }
-    }
-
-    .starfield {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* CorePortals Styles */
-    .content-wrapper {
-      position: relative;
-      z-index: 2;
-      min-height: 100vh;
-      padding-bottom: 20px;
-    }
-
-    header {
-      padding: 25px 20px;
-      font-size: 2.8rem;
-      background: linear-gradient(90deg, rgba(26, 31, 74, 0.8), rgba(7, 7, 9, 0.8));
-      color: var(--accent);
-      text-shadow: var(--accent-glow);
-      letter-spacing: 3px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(5px);
-    }
-
-    header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(
-        to bottom right,
-        rgba(168, 92, 255, 0.1),
-        transparent
-      );
-      transform: rotate(30deg);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .tabs {
-      display: flex;
-      justify-content: center;
-      background: rgba(10, 10, 12, 0.8);
-      backdrop-filter: blur(5px);
-      border-bottom: 1px solid rgba(168, 92, 255, 0.2);
-    }
-
-    .tab-button {
-      padding: 15px 25px;
-      font-size: 1.1rem;
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-      font-weight: 500;
-    }
-
-    .tab-button:hover {
-      color: var(--text-primary);
-    }
-
-    .tab-button.active {
-      color: var(--accent);
-      text-shadow: var(--accent-glow);
-    }
-
-    .tab-button.active::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 10%;
-      width: 80%;
-      height: 3px;
-      background: var(--accent);
-      box-shadow: var(--accent-glow);
-      border-radius: 3px 3px 0 0;
-    }
-
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.5s ease;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    .search-container {
-      padding: 15px;
-      background: rgba(10, 10, 12, 0.8);
-      backdrop-filter: blur(5px);
-      border-bottom: 1px solid rgba(168, 92, 255, 0.2);
-    }
-
-    #gameSearch {
-      width: 90%;
-      max-width: 600px;
-      padding: 12px 20px;
-      font-size: 16px;
-      background: rgba(25, 25, 30, 0.8);
-      border: 1px solid rgba(168, 92, 255, 0.3);
-      border-radius: 30px;
-      color: var(--text-primary);
-      outline: none;
-      transition: all 0.3s ease;
-    }
-
-    #gameSearch:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 15px rgba(168, 92, 255, 0.4);
-    }
-
-    #gameSearch::placeholder {
-      color: var(--text-secondary);
-    }
-
-    .game-stats {
-      padding: 10px;
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-    }
-
-    .game-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
-      padding: 25px;
-      max-width: 1600px;
-      margin: 0 auto;
-    }
-
-    .game-card {
-      background: linear-gradient(145deg, rgba(21, 21, 24, 0.9), rgba(17, 18, 21, 0.9));
-      border: 1px solid rgba(168, 92, 255, 0.15);
-      border-radius: 12px;
-      padding: 15px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      color: var(--text-primary);
-      text-shadow: 0 0 5px rgba(168, 92, 255, 0.5);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 220px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(5px);
-    }
-
-    .game-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .game-card:hover {
-      transform: translateY(-5px) scale(1.02);
-      border-color: var(--accent);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), var(--accent-glow);
-    }
-
-    .game-card:hover::before {
-      opacity: 1;
-    }
-
-    .game-logo {
-      width: 80px;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 15px;
-      font-size: 2.5rem;
-      color: var(--accent);
-      text-shadow: var(--accent-glow);
-      transition: all 0.3s ease;
-    }
-
-    .game-card:hover .game-logo {
-      transform: scale(1.1);
-    }
-
-    .game-title {
-      font-size: 1rem;
-      margin-top: 5px;
-      font-weight: 500;
-    }
-
-    .game-category {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      margin-top: 8px;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 3px 8px;
-      border-radius: 10px;
-    }
-
-    #overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.97);
-      z-index: 9999;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #gameFrame {
-      flex: 1;
-      border: none;
-      width: 100%;
-      height: 100%;
-    }
-
-    .controls {
-      position: absolute;
-      bottom: 20px;
-      left: 0;
-      right: 0;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      padding: 10px;
-      z-index: 10000;
-    }
-
-    #closeBtn, #fullscreenBtn {
-      padding: 12px 25px;
-      font-size: 1rem;
-      background: rgba(168, 92, 255, 0.2);
-      border: 1px solid var(--accent);
-      border-radius: 8px;
-      color: var(--text-primary);
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(5px);
-    }
-
-    #closeBtn:hover, #fullscreenBtn:hover {
-      background: rgba(168, 92, 255, 0.3);
-      box-shadow: var(--accent-glow);
-    }
-
-    footer {
-      padding: 20px;
-      background: rgba(7, 7, 9, 0.8);
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      margin-top: 30px;
-      border-top: 1px solid rgba(168, 92, 255, 0.1);
-      backdrop-filter: blur(5px);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes glow {
-      0% { text-shadow: 0 0 5px var(--accent); }
-      50% { text-shadow: 0 0 20px var(--accent), 0 0 30px var(--accent); }
-      100% { text-shadow: 0 0 5px var(--accent); }
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
-      100% { transform: translateY(0px); }
-    }
-
-    @media (max-width: 768px) {
-      .game-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 15px;
-        padding: 15px;
-      }
-
-      header {
-        font-size: 2.2rem;
-        padding: 20px 15px;
-      }
-
-      .game-card {
-        min-height: 190px;
-        padding: 12px;
-      }
-
-      .game-logo {
-        width: 60px;
-        height: 60px;
-        font-size: 2rem;
-      }
-
-      .tab-button {
-        padding: 12px 15px;
-        font-size: 1rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .game-grid {
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-        gap: 10px;
-        padding: 10px;
-      }
-
-      header {
-        font-size: 1.8rem;
-      }
-
-      .game-title {
-        font-size: 0.9rem;
-      }
-
-      .tab-button {
-        padding: 10px 12px;
-        font-size: 0.9rem;
-      }
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CorePortals</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<style>
+:root{--bg:#2a1873;--panel:#101622;--tile:#0e161e;--ring:#d6e3ee;--ring-soft:rgba(214,227,238,.16);--muted:#9fb0c1;--text:#eaf3f9;--accent:#7ee0ff;--logo-lift:18px}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:radial-gradient(1000px 700px at 20% -10%,#3c1b9e 0%,#2a1873 60%,#1a144e 100%);color:var(--text);font-family:"Lexend",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+.bg-waves{pointer-events:none;position:fixed;inset:0;z-index:-3;filter:blur(30px)}
+.bg-waves::before,.bg-waves::after{content:"";position:absolute;inset:-20%;background:radial-gradient(40% 60% at 20% 30%,rgba(255,255,255,.08),transparent 60%),radial-gradient(30% 50% at 70% 10%,rgba(126,224,255,.18),transparent 60%),radial-gradient(35% 55% at 80% 80%,rgba(255,0,150,.12),transparent 60%),radial-gradient(45% 45% at 20% 85%,rgba(120,70,255,.18),transparent 60%);animation:flow 18s ease-in-out infinite alternate}
+.bg-waves::after{animation-duration:26s;mix-blend-mode:screen;opacity:.8}
+@keyframes flow{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-4%,2%,0) scale(1.05)}100%{transform:translate3d(4%,-3%,0) scale(1.02)}}
+#stars{position:fixed;inset:0;z-index:-2;display:block;background:transparent}
+.container{max-width:1200px;margin:0 auto;padding:40px 24px}
+
+/* ===== Smaller nav bar (tabs + logo) ===== */
+.nav{margin-top:6px;background:var(--panel);border:4px solid var(--ring);border-radius:16px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:12px 16px;box-shadow:0 10px 26px rgba(0,0,0,.35);overflow:visible}
+.nav-left,.nav-right{display:flex;align-items:center}
+.nav-left{justify-content:flex-end;gap:18px;position:relative}
+.nav-right{justify-content:flex-start;gap:18px;position:relative}
+.nav-left::after,.nav-right::before{content:"";display:block;width:2px;height:24px;background:var(--ring);border-radius:1px;opacity:.95}
+.nav-left::after{margin-left:12px}
+.nav-right::before{margin-right:12px}
+
+/* Logo slightly lifted, but smaller */
+.brand{height:118px;width:308px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(0,0,0,.18));border-radius:24px;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 24px rgba(0,0,0,.35);transform:translateY(calc(-1 * var(--logo-lift)));z-index:2}
+.brand::after{content:"";position:absolute;inset:0;border-radius:24px;border:2px solid var(--ring);outline:6px solid var(--ring-soft)}
+.brand img{max-width:90%;max-height:82%;object-fit:contain;display:block;filter:drop-shadow(0 2px 8px rgba(0,0,0,.45))}
+
+/* Tabs a touch smaller to match */
+.tab-btn{background:transparent;border:none;color:var(--muted);font-weight:700;letter-spacing:.2px;font-size:20px;padding:8px 6px;cursor:pointer;position:relative;user-select:none}
+.tab-btn:hover{color:#cfe0ea}
+.tab-btn:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:6px}
+.tab-btn.active{color:var(--accent)}
+.tab-btn.active::after{content:"";position:absolute;left:8%;right:8%;bottom:-10px;height:3px;background:var(--accent);border-radius:2px}
+
+/* Rest unchanged */
+.filters{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:26px 0 8px}
+.search{width:min(560px,88vw);height:52px;padding:0 16px;background:#131d25;border:4px solid var(--ring);border-radius:12px;color:var(--text);font-size:17px}
+.search::placeholder{color:var(--muted);opacity:.9}
+.select{height:52px;padding:0 14px;background:#131d25;border:4px solid var(--ring);border-radius:12px;color:var(--text);font-size:16px;min-width:220px}
+.hidden{display:none !important}
+.stats{text-align:center;color:var(--muted);font-size:14px;margin-top:6px}
+.tabs{margin-top:16px}
+.tab-panel{display:none;animation:fade .25s ease}
+.tab-panel.active{display:block}
+
+.grid{display:grid;grid-template-columns:repeat(5,minmax(160px,1fr));gap:28px;padding:18px 6px 8px}
+.card{background:var(--tile);border:4px solid var(--ring);border-radius:22px;height:196px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;box-shadow:0 10px 26px rgba(0,0,0,.35);text-align:center}
+.card:hover{transform:translateY(-4px);border-color:#fff}
+.card.disabled{cursor:default}
+.card.disabled:hover{transform:none;border-color:var(--ring)}
+.logo-img{width:104px;height:104px;border-radius:14px;background:#0a1218;object-fit:contain;display:block}
+.title{font-size:15px;font-weight:700;line-height:1.15;padding:0 10px;color:#f5fbff}
+.sub{font-size:12px;color:var(--muted);padding:0 10px;word-break:break-all}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.96);display:none;z-index:40;align-items:center;justify-content:center}
+.player{position:relative;width:100%;height:100%}
+.player iframe{border:0;width:100%;height:100%}
+.controls{position:absolute;left:0;right:0;bottom:20px;display:flex;justify-content:center;gap:12px;z-index:50}
+.btn{background:rgba(255,255,255,.08);color:#fff;border:1px solid #cfe0ea;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}
+.btn:hover{background:rgba(255,255,255,.14)}
+footer{color:var(--muted);font-size:14px;text-align:center;padding:28px 0 36px}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* Long bar style for Events & Updates */
+.tab-panel#events .grid,.tab-panel#updates .grid{grid-template-columns:1fr}
+.card.bar{flex-direction:row;align-items:center;justify-content:flex-start;gap:16px;height:96px;padding:0 16px;text-align:left}
+.card.bar .logo-img{width:64px;height:64px;border-radius:12px}
+.card.bar .title{font-size:16px}
+.card.bar .sub{font-size:13px}
+
+/* Responsive */
+@media (max-width:860px){
+  .nav{grid-template-columns:1fr;gap:12px}
+  .nav-left,.nav-right{justify-content:center;gap:16px}
+  .nav-left::after,.nav-right::before{display:none}
+  .brand{height:108px;width:268px;transform:none}
+}
+@media (max-width:620px){
+  .tab-btn{font-size:19px}
+  .grid{grid-template-columns:repeat(2,minmax(130px,1fr));gap:18px}
+  .brand{height:100px;width:248px}
+  .card{height:184px}
+}
+</style>
 </head>
 <body>
-  <!-- Space Background Elements -->
-  <div id="particles-js"></div>
-  <div class="scene">
-    <div class="center">
-      <div class="orbit orbit-3"><div class="planet-wrap pw-3"><div class="planet planet-3"><div class="atmosphere"></div></div></div></div>
-      <div class="orbit orbit-1"><div class="planet-wrap pw-1"><div class="planet planet-1"><div class="atmosphere"></div></div><div class="moon" style="top:-25px;left:90px"></div></div></div>
-      <div class="orbit orbit-2"><div class="planet-wrap pw-2"><div class="planet planet-2"><div class="atmosphere"></div></div><div class="ring"></div></div></div>
-      <div class="orbit orbit-4"><div class="planet-wrap pw-4"><div class="planet planet-4"><div class="atmosphere"></div></div></div></div>
-      <div class="ufo"></div>
-      <div class="starfield" id="starfield"></div>
+<canvas id="stars"></canvas>
+<div class="bg-waves"></div>
+
+<div class="container">
+  <nav class="nav" role="tablist" aria-label="Sections">
+    <div class="nav-left">
+      <button class="tab-btn active" data-tab="games">Games</button>
+      <button class="tab-btn" data-tab="events">Events</button>
+    </div>
+
+    <div class="brand" aria-hidden="true">
+      <img src="https://coreportals.github.io/images/logo.png" alt="CorePortals Logo">
+    </div>
+
+    <div class="nav-right">
+      <button class="tab-btn" data-tab="proxies">Proxies</button>
+      <button class="tab-btn" data-tab="updates">Updates</button>
+    </div>
+  </nav>
+
+  <div class="filters" id="filters">
+    <input id="search" class="search" type="text" placeholder="Search..." autocomplete="off">
+    <select id="category" class="select" aria-label="Filter by category">
+      <option value="All">All Categories</option>
+    </select>
+  </div>
+  <div class="stats" id="stats"></div>
+
+  <section class="tabs">
+    <div id="games" class="tab-panel active"><div class="grid" id="gameGrid"></div></div>
+    <div id="events" class="tab-panel"><div class="grid" id="eventGrid"></div></div>
+    <div id="proxies" class="tab-panel"><div class="grid" id="proxyGrid"></div></div>
+    <div id="updates" class="tab-panel"><div class="grid" id="updateGrid"></div></div>
+  </section>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="player">
+    <iframe id="frame" src=""></iframe>
+    <div class="controls">
+      <button class="btn" id="back"><i class="fa-solid fa-arrow-left"></i> Back</button>
+      <button class="btn" id="full"><i class="fa-solid fa-expand"></i> Fullscreen</button>
     </div>
   </div>
+</div>
 
-  <!-- CorePortals Content -->
-  <div class="content-wrapper">
-    <header>
-      <img style="display: block; margin-left: auto; margin-right: auto;" src="/images/logo.png" alt="" width="292" height="219" />
-    </header>
+<footer>© 2025 CorePortals</footer>
 
-    <div class="tabs">
-      <button class="tab-button active">
-        <i class="fas fa-gamepad"></i> Games
-      </button>
-    </div>
+<script>
+const games = [
+  { name:"2048", url:"https://xpixelcoderx.github.io/games/2048/", category:"Puzzle", img:"/images/games/2048.png" },
+  { name:"1v1lol", url:"https://xpixelcoderx.github.io/games/1v1lol/", category:"Shooter", img:"https://coreportals.github.io/images/games/1v1lol.png" },
+  { name:"Geometry Dash", url:"https://xpixelcoderx.github.io/games/geometrydash/", category:"Platform", img:"https://coreportals.github.io/images/games/geometry-dash.png" },
+  { name:"Cookie Clicker", url:"https://xpixelcoderx.github.io/games/cookie-clicker/", category:"Clicker", img:"https://coreportals.github.io/images/games/cookie-clicker.png" },
+  { name:"Retro Bowl", url:"https://xpixelcoderx.github.io/games/retro-bowl/", category:"Sports", img:"https://coreportals.github.io/images/games/retro-bowl.png" },
+  { name:"Slope", url:"https://xpixelcoderx.github.io/games/slope/", category:"Arcade", img:"https://coreportals.github.io/images/games/slope.png" },
+  { name:"Tunnel Rush", url:"https://xpixelcoderx.github.io/games/tunnel-rush/", category:"Arcade", img:"https://coreportals.github.io/images/games/tunnel-rush.png" },
+  { name:"Getting Over It", url:"https://xpixelcoderx.github.io/games/getting-over-it/", category:"Puzzle", img:"https://coreportals.github.io/images/games/getting-over-it.png" },
+  { name:"Krunker", url:"https://xpixelcoderx.github.io/games/krunker/", category:"Shooter", img:"https://coreportals.github.io/images/games/krunker.png" },
+  { name:"Flappy Bird", url:"https://xpixelcoderx.github.io/games/flappy-bird/", category:"Arcade", img:"https://coreportals.github.io/images/games/flappy-bird.png" },
+  { name:"Subway Surfers", url:"https://xpixelcoderx.github.io/games/subway-surfers/", category:"Arcade", img:"https://coreportals.github.io/images/games/subway-surfers.png" },
+  { name:"Minecraft", url:"https://xpixelcoderx.github.io/games/minecraft/", category:"Sandbox", img:"https://coreportals.github.io/images/games/minecraft.png" },
+  { name:"Mario", url:"https://xpixelcoderx.github.io/games/mario/", category:"Platform", img:"https://coreportals.github.io/images/games/mario.png" },
+  { name:"Happy Wheels", url:"https://xpixelcoderx.github.io/games/happy-wheels/", category:"Racing", img:"https://coreportals.github.io/images/games/happy-wheels.png" },
+  { name:"Vex 6", url:"https://xpixelcoderx.github.io/games/vex6/", category:"Platform", img:"https://coreportals.github.io/images/games/vex6.png" },
+  { name:"Tiny Fishing", url:"https://xpixelcoderx.github.io/games/tiny-fishing/", category:"Simulation", img:"https://coreportals.github.io/images/games/tiny-fishing.png" },
+  { name:"Getaway Shootout", url:"https://xpixelcoderx.github.io/games/getaway-shootout/", category:"Action", img:"https://coreportals.github.io/images/games/getaway-shootout.png" },
+  { name:"Stickman Survival", url:"https://xpixelcoderx.github.io/games/stickman-survival/", category:"Action", img:"https://coreportals.github.io/images/games/stickman-survival.png" },
+  { name:"Temple Run 2", url:"https://xpixelcoderx.github.io/games/temple-run-2/", category:"Arcade", img:"https://coreportals.github.io/images/games/temple-run-2.png" },
+  { name:"Among Us", url:"https://xpixelcoderx.github.io/games/among-us/", category:"Social", img:"https://coreportals.github.io/images/games/among-us.png" }
+];
 
-    <div class="search-container">
-      <input type="text" id="gameSearch" placeholder="Search for a game..." onkeyup="searchGames()" />
-    </div>
+const events = [
+  { name:"CorePortals launch window announced — stay tuned!", category:"Announcement", img:"https://coreportals.github.io/images/logo.png" },
+  { name:"Community tournament coming soon", category:"Event", img:"https://coreportals.github.io/images/logo.png" }
+];
 
-    <div class="game-stats" id="gameStats">
-      Total Games: <span id="totalGames">0</span> | 
-      Showing: <span id="showingGames">0</span>
-    </div>
+const proxies = [
+  { name:"Ghost Proxy", url:"https://1.jobvn.com", category:"Network", img:"https://coreportals.github.io/images/proxies/ghost-proxy.png" }
+];
 
-    <div class="tab-content active" id="gamesTab">
-      <main class="game-grid" id="gameGrid">
-        <!-- Games will be populated by JavaScript -->
-      </main>
-    </div>
+const updates = [
+  { name:"No updates yet", category:"Status", img:"https://coreportals.github.io/images/logo.png" }
+];
 
-    <div id="overlay">
-      <iframe id="gameFrame" src=""></iframe>
-      <div class="controls">
-        <button id="closeBtn" onclick="closeGame()"><i class="fas fa-arrow-left"></i> Back</button>
-        <button id="fullscreenBtn" onclick="toggleFullscreen()"><i class="fas fa-expand"></i> Fullscreen</button>
-      </div>
-    </div>
+const tabData = { games, events, proxies, updates };
 
-    <footer>
-      © 2025 CorePortals, Skulgly On Top | Powered by HTML5, CSS3 & JavaScript
-    </footer>
-  </div>
+const el = {
+  gameGrid: document.getElementById("gameGrid"),
+  eventGrid: document.getElementById("eventGrid"),
+  proxyGrid: document.getElementById("proxyGrid"),
+  updateGrid: document.getElementById("updateGrid"),
+  stats: document.getElementById("stats"),
+  search: document.getElementById("search"),
+  category: document.getElementById("category"),
+  overlay: document.getElementById("overlay"),
+  frame: document.getElementById("frame")
+};
 
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <script>
-    // Space background initialization
-    particlesJS('particles-js', {
-      "particles": {
-        "number": {
-          "value": 180,
-          "density": {
-            "enable": true,
-            "value_area": 900
-          }
-        },
-        "color": {
-          "value": ["#a85cff", "#4ac6ff", "#cbb3ff"]
-        },
-        "shape": {
-          "type": "circle"
-        },
-        "opacity": {
-          "value": 1,
-          "random": true,
-          "anim": {
-            "enable": true,
-            "speed": 0.4,
-            "opacity_min": 0.25
-          }
-        },
-        "size": {
-          "value": 2.2,
-          "random": true
-        },
-        "move": {
-          "enable": true,
-          "speed": 0.35,
-          "direction": "none",
-          "random": true,
-          "out_mode": "out"
-        }
-      },
-      "interactivity": {
-        "detect_on": "canvas",
-        "events": {
-          "onhover": {
-            "enable": true,
-            "mode": "repulse"
-          }
-        },
-        "modes": {
-          "repulse": {
-            "distance": 100,
-            "duration": 0.4
-          }
-        }
-      },
-      "retina_detect": true
-    });
+document.querySelectorAll(".tab-btn").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
+    b.classList.add("active");
+    document.getElementById(b.dataset.tab).classList.add("active");
+    buildFilters(b.dataset.tab);
+    render(b.dataset.tab);
+  });
+});
 
-    // Starfield creation
-    (function stars() {
-      var c = document.getElementById('starfield');
-      var w = innerWidth, h = innerHeight;
-      for (var i = 0; i < 150; i++) {
-        var s = document.createElement('div');
-        var size = Math.random() * 2 + 0.5;
-        s.style.position = 'absolute';
-        s.style.left = Math.random() * w + 'px';
-        s.style.top = Math.random() * h + 'px';
-        s.style.width = size + 'px';
-        s.style.height = size + 'px';
-        s.style.borderRadius = '50%';
-        s.style.background = ['#a85cff', '#4ac6ff', '#fff'][Math.floor(Math.random() * 3)];
-        s.style.opacity = 0.7;
-        s.style.animation = 'twinkle ' + (Math.random() * 5 + 3) + 's ease-in-out infinite';
-        c.appendChild(s);
-      }
-      var st = document.createElement('style');
-      st.textContent = '@keyframes twinkle{0%{opacity:0.3}50%{opacity:1}100%{opacity:0.3}}';
-      document.head.appendChild(st);
-    })();
+el.search.addEventListener("input", ()=>render(currentTab()));
+el.category.addEventListener("change", ()=>render(currentTab()));
+document.getElementById("back").addEventListener("click", closeOverlay);
+document.getElementById("full").addEventListener("click", ()=>{const f=el.frame;if(f.requestFullscreen) f.requestFullscreen()});
 
-    // Games data (only 20 games as requested)
-    const games = [
-      { name: "10 Minutes Till Dawn", url: "https://xpixelcoderx.github.io/games/10-minutes-till-dawn/", icon: "fa-clock", category: "Action" },
-      { name: "1v1lol", url: "https://xpixelcoderx.github.io/games/1v1lol/", icon: "fa-crosshairs", category: "Shooter" },
-      { name: "2048", url: "https://xpixelcoderx.github.io/games/2048/", icon: "fa-th-large", category: "Puzzle" },
-      { name: "Among Us", url: "https://xpixelcoderx.github.io/games/among-us/", icon: "fa-user-astronaut", category: "Social" },
-      { name: "Angry Birds", url: "https://xpixelcoderx.github.io/games/angry-birds/", icon: "fa-dove", category: "Arcade" },
-      { name: "Cookie Clicker", url: "https://xpixelcoderx.github.io/games/cookie-clicker/", icon: "fa-cookie-bite", category: "Clicker" },
-      { name: "Crossy Road", url: "https://xpixelcoderx.github.io/games/crossyroad/", icon: "fa-frog", category: "Arcade" },
-      { name: "Friday Night Funkin", url: "https://xpixelcoderx.github.io/games/fridaynightfunkin/", icon: "fa-music", category: "Rhythm" },
-      { name: "Geometry Dash", url: "https://xpixelcoderx.github.io/games/geometrydash/", icon: "fa-running", category: "Platform" },
-      { name: "Google Snake", url: "https://xpixelcoderx.github.io/games/google-snake/", icon: "fa-google", category: "Arcade" },
-      { name: "Krunker", url: "https://xpixelcoderx.github.io/games/krunker/", icon: "fa-gun", category: "Shooter" },
-      { name: "Madalin Stunt Cars 2", url: "https://xpixelcoderx.github.io/games/madalin-stunt-cars-2/", icon: "fa-car", category: "Racing" },
-      { name: "Minecraft", url: "https://xpixelcoderx.github.io/games/minecraft/", icon: "fa-cube", category: "Sandbox" },
-      { name: "Pacman", url: "https://xpixelcoderx.github.io/games/pacman/", icon: "fa-ghost", category: "Arcade" },
-      { name: "Retro Bowl", url: "https://xpixelcoderx.github.io/games/retro-bowl/", icon: "fa-football", category: "Sports" },
-      { name: "Slope", url: "https://xpixelcoderx.github.io/games/slope/", icon: "fa-chart-line", category: "Arcade" },
-      { name: "Subway Surfers", url: "https://xpixelcoderx.github.io/games/subway-surfers/", icon: "fa-train-subway", category: "Arcade" },
-      { name: "Tetris", url: "https://xpixelcoderx.github.io/games/tetris/", icon: "fa-th-large", category: "Puzzle" },
-      { name: "Wordle", url: "https://xpixelcoderx.github.io/games/wordle/", icon: "fa-font", category: "Puzzle" },
-      { name: "Zombs Royale", url: "https://xpixelcoderx.github.io/games/zombs-royale/", icon: "fa-crosshairs", category: "Shooter" }
-    ];
+function currentTab(){return document.querySelector(".tab-btn.active").dataset.tab}
 
-    function initGameGrid() {
-      const gameGrid = document.getElementById('gameGrid');
-      gameGrid.innerHTML = '';
+function createCard(item, type){
+  const isTextOnly = (type==="events"||type==="updates");
+  const c = document.createElement("div");
+  c.className = isTextOnly ? "card bar disabled" : "card";
+  const img = document.createElement("img");
+  img.className = "logo-img";
+  img.alt = item.name;
+  img.src = item.img || "https://coreportals.github.io/images/logo.png";
+  const t = document.createElement("div");
+  t.className = "title";
+  t.textContent = item.name;
+  const s = document.createElement("div");
+  s.className = "sub";
+  if(type==="games"){ s.textContent = (item.category||"") }
+  else if(type==="proxies"){ s.textContent = (item.category||"") + (item.url?(" • "+item.url):"") }
+  else { s.textContent = (item.category||"") }
+  c.appendChild(img); c.appendChild(t); c.appendChild(s);
+  if(!isTextOnly){ c.addEventListener("click",()=>openOverlay(item.url)) }
+  return c;
+}
 
-      games.forEach(game => {
-        const gameCard = document.createElement('div');
-        gameCard.className = 'game-card';
-        gameCard.onclick = () => openGame(game.url);
+function render(tab){
+  const grid = {games:el.gameGrid,events:el.eventGrid,proxies:el.proxyGrid,updates:el.updateGrid}[tab];
+  grid.innerHTML = "";
+  const q = el.search.value.trim().toLowerCase();
+  const cat = el.category.value;
+  const list = (tabData[tab]||[]).filter(it=>{
+    const byText = !q || it.name.toLowerCase().includes(q) || (it.category||"").toLowerCase().includes(q) || (it.url||"").toLowerCase().includes(q);
+    const byCat = cat==="All" || (it.category||"")===cat;
+    return byText && byCat;
+  });
+  if(list.length===0){
+    const t = {name:"No items yet", category:"Template", img:"/images/logo.png"};
+    grid.appendChild(createCard(t, tab));
+  }else{
+    list.forEach(it=>grid.appendChild(createCard(it, tab)));
+  }
+  el.stats.textContent = `${capitalize(tab)} • Total: ${(tabData[tab]||[]).length} • Showing: ${list.length}`;
+}
 
-        gameCard.innerHTML = `
-          <div class="game-logo">
-            <i class="fas ${game.icon}"></i>
-          </div>
-          <div class="game-title">${game.name}</div>
-          <div class="game-category">${game.category}</div>
-        `;
+function buildFilters(tab){
+  const cats = Array.from(new Set((tabData[tab]||[]).map(x=>x.category||"General")));
+  el.category.innerHTML = `<option value="All">All Categories</option>` + cats.map(c=>`<option value="${c}">${c}</option>`).join("");
+  el.search.value = "";
+}
 
-        gameGrid.appendChild(gameCard);
-      });
+function openOverlay(url){ if(!url) return; el.frame.src=url; el.overlay.style.display="flex" }
+function closeOverlay(){ el.frame.src=""; el.overlay.style.display="none" }
+function capitalize(s){return s.charAt(0).toUpperCase()+s.slice(1)}
 
-      document.getElementById('totalGames').textContent = games.length;
-      document.getElementById('showingGames').textContent = games.length;
-    }
+function init(){ buildFilters("games"); render("games"); starfield() }
+window.addEventListener("load", init);
 
-    function openGame(url) {
-      document.getElementById('gameFrame').src = url;
-      document.getElementById('overlay').style.display = 'flex';
-    }
-
-    function closeGame() {
-      document.getElementById('gameFrame').src = "";
-      document.getElementById('overlay').style.display = 'none';
-    }
-
-    function toggleFullscreen() {
-      const iframe = document.getElementById('gameFrame');
-      if (iframe.requestFullscreen) {
-        iframe.requestFullscreen();
-      } else if (iframe.mozRequestFullScreen) {
-        iframe.mozRequestFullScreen();
-      } else if (iframe.webkitRequestFullscreen) {
-        iframe.webkitRequestfullscreen();
-      } else if (iframe.msRequestFullscreen) {
-        iframe.msRequestFullscreen();
-      }
-    }
-
-    function searchGames() {
-      let input = document.getElementById('gameSearch').value.toLowerCase();
-      let cards = document.getElementsByClassName('game-card');
-      let showingCount = 0;
-
-      for (let i = 0; i < cards.length; i++) {
-        let gameName = cards[i].getElementsByClassName('game-title')[0].textContent.toLowerCase();
-        if (gameName.includes(input)) {
-          cards[i].style.display = "";
-          showingCount++;
-        } else {
-          cards[i].style.display = "none";
-        }
-      }
-
-      document.getElementById('showingGames').textContent = showingCount;
-    }
-
-    window.onload = function() {
-      initGameGrid();
-    };
-  </script>
+function starfield(){
+  const canvas=document.getElementById("stars"); const ctx=canvas.getContext("2d"); let w,h,stars=[];
+  function resize(){ w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; stars=Array.from({length:Math.min(450,Math.floor(w*h/4500))}).map(()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.1+0.2,a:Math.random()*0.6+0.2,v:(Math.random()*0.8+0.2)*0.01})) }
+  function draw(){ ctx.clearRect(0,0,w,h); ctx.fillStyle="#ffffff"; stars.forEach(s=>{ s.a+=s.v; const tw=0.5+0.5*Math.sin(s.a); ctx.globalAlpha=0.2+0.8*tw; ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill() }); ctx.globalAlpha=1; requestAnimationFrame(draw) }
+  window.addEventListener("resize", resize); resize(); draw();
+}
+</script>
 </body>
 </html>
