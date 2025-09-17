@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 <style>
-:root{--bg:#2a1873;--panel:#101622;--tile:#0e161e;--ring:#d6e3ee;--ring-soft:rgba(214,227,238,.16);--muted:#9fb0c1;--text:#eaf3f9;--accent:#7ee0ff;--logo-lift:18px}
+:root{--bg:#2a1873;--panel:#101622;--tile:#0e161e;--ring:#d6e3ee;--ring-soft:rgba(214,227,238,.16);--muted:#9fb0c1;--text:#eaf3f9;--accent:#7ee0ff;--logo-lift:14px}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;background:radial-gradient(1000px 700px at 20% -10%,#3c1b9e 0%,#2a1873 60%,#1a144e 100%);color:var(--text);font-family:"Lexend",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
@@ -18,35 +18,31 @@ body{margin:0;background:radial-gradient(1000px 700px at 20% -10%,#3c1b9e 0%,#2a
 #stars{position:fixed;inset:0;z-index:-2;display:block;background:transparent}
 .container{max-width:1200px;margin:0 auto;padding:40px 24px}
 
-/* ===== Smaller nav bar (tabs + logo) ===== */
-.nav{margin-top:6px;background:var(--panel);border:4px solid var(--ring);border-radius:16px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:12px 16px;box-shadow:0 10px 26px rgba(0,0,0,.35);overflow:visible}
+.nav{margin-top:6px;background:var(--panel);border:3px solid var(--ring);border-radius:14px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:8px 12px;box-shadow:0 8px 20px rgba(0,0,0,.35);overflow:visible}
 .nav-left,.nav-right{display:flex;align-items:center}
-.nav-left{justify-content:flex-end;gap:18px;position:relative}
-.nav-right{justify-content:flex-start;gap:18px;position:relative}
-.nav-left::after,.nav-right::before{content:"";display:block;width:2px;height:24px;background:var(--ring);border-radius:1px;opacity:.95}
-.nav-left::after{margin-left:12px}
-.nav-right::before{margin-right:12px}
+.nav-left{justify-content:flex-end;gap:14px;position:relative}
+.nav-right{justify-content:flex-start;gap:14px;position:relative}
+.nav-left::after,.nav-right::before{content:"";display:block;width:2px;height:20px;background:var(--ring);border-radius:1px;opacity:.95}
+.nav-left::after{margin-left:8px}
+.nav-right::before{margin-right:8px}
 
-/* Logo slightly lifted, but smaller */
-.brand{height:118px;width:308px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(0,0,0,.18));border-radius:24px;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 24px rgba(0,0,0,.35);transform:translateY(calc(-1 * var(--logo-lift)));z-index:2}
-.brand::after{content:"";position:absolute;inset:0;border-radius:24px;border:2px solid var(--ring);outline:6px solid var(--ring-soft)}
-.brand img{max-width:90%;max-height:82%;object-fit:contain;display:block;filter:drop-shadow(0 2px 8px rgba(0,0,0,.45))}
+.brand{height:96px;width:240px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(0,0,0,.18));border-radius:20px;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 18px rgba(0,0,0,.35);transform:translateY(calc(-1 * var(--logo-lift)));z-index:2}
+.brand::after{content:"";position:absolute;inset:0;border-radius:20px;border:2px solid var(--ring);outline:5px solid var(--ring-soft)}
+.brand img{max-width:90%;max-height:82%;object-fit:contain;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,.45))}
 
-/* Tabs a touch smaller to match */
-.tab-btn{background:transparent;border:none;color:var(--muted);font-weight:700;letter-spacing:.2px;font-size:20px;padding:8px 6px;cursor:pointer;position:relative;user-select:none}
+.tab-btn{background:transparent;border:none;color:var(--muted);font-weight:700;letter-spacing:.2px;font-size:18px;padding:6px 4px;cursor:pointer;position:relative;user-select:none}
 .tab-btn:hover{color:#cfe0ea}
 .tab-btn:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:6px}
 .tab-btn.active{color:var(--accent)}
-.tab-btn.active::after{content:"";position:absolute;left:8%;right:8%;bottom:-10px;height:3px;background:var(--accent);border-radius:2px}
+.tab-btn.active::after{content:"";position:absolute;left:10%;right:10%;bottom:-8px;height:3px;background:var(--accent);border-radius:2px}
 
-/* Rest unchanged */
-.filters{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:26px 0 8px}
-.search{width:min(560px,88vw);height:52px;padding:0 16px;background:#131d25;border:4px solid var(--ring);border-radius:12px;color:var(--text);font-size:17px}
+.filters{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:22px 0 8px}
+.search{width:min(560px,88vw);height:48px;padding:0 16px;background:#131d25;border:3px solid var(--ring);border-radius:12px;color:var(--text);font-size:16px}
 .search::placeholder{color:var(--muted);opacity:.9}
-.select{height:52px;padding:0 14px;background:#131d25;border:4px solid var(--ring);border-radius:12px;color:var(--text);font-size:16px;min-width:220px}
+.select{height:48px;padding:0 12px;background:#131d25;border:3px solid var(--ring);border-radius:12px;color:var(--text);font-size:15px;min-width:200px}
 .hidden{display:none !important}
 .stats{text-align:center;color:var(--muted);font-size:14px;margin-top:6px}
-.tabs{margin-top:16px}
+.tabs{margin-top:14px}
 .tab-panel{display:none;animation:fade .25s ease}
 .tab-panel.active{display:block}
 
@@ -65,27 +61,25 @@ body{margin:0;background:radial-gradient(1000px 700px at 20% -10%,#3c1b9e 0%,#2a
 .controls{position:absolute;left:0;right:0;bottom:20px;display:flex;justify-content:center;gap:12px;z-index:50}
 .btn{background:rgba(255,255,255,.08);color:#fff;border:1px solid #cfe0ea;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}
 .btn:hover{background:rgba(255,255,255,.14)}
-footer{color:var(--muted);font-size:14px;text-align:center;padding:28px 0 36px}
+footer{color:var(--muted);font-size:14px;text-align:center;padding:24px 0 32px}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
-/* Long bar style for Events & Updates */
 .tab-panel#events .grid,.tab-panel#updates .grid{grid-template-columns:1fr}
 .card.bar{flex-direction:row;align-items:center;justify-content:flex-start;gap:16px;height:96px;padding:0 16px;text-align:left}
 .card.bar .logo-img{width:64px;height:64px;border-radius:12px}
 .card.bar .title{font-size:16px}
 .card.bar .sub{font-size:13px}
 
-/* Responsive */
 @media (max-width:860px){
-  .nav{grid-template-columns:1fr;gap:12px}
-  .nav-left,.nav-right{justify-content:center;gap:16px}
+  .nav{grid-template-columns:1fr;gap:10px}
+  .nav-left,.nav-right{justify-content:center;gap:12px}
   .nav-left::after,.nav-right::before{display:none}
-  .brand{height:108px;width:268px;transform:none}
+  .brand{height:92px;width:230px;transform:none}
 }
 @media (max-width:620px){
-  .tab-btn{font-size:19px}
+  .tab-btn{font-size:17px}
   .grid{grid-template-columns:repeat(2,minmax(130px,1fr));gap:18px}
-  .brand{height:100px;width:248px}
+  .brand{height:88px;width:220px}
   .card{height:184px}
 }
 </style>
@@ -141,7 +135,7 @@ footer{color:var(--muted);font-size:14px;text-align:center;padding:28px 0 36px}
 
 <script>
 const games = [
-  { name:"2048", url:"https://xpixelcoderx.github.io/games/2048/", category:"Puzzle", img:"/images/games/2048.png" },
+  { name:"2048", url:"https://xpixelcoderx.github.io/games/2048/", category:"Puzzle", img:"https://coreportals.github.io/images/games/2048.png" },
   { name:"1v1lol", url:"https://xpixelcoderx.github.io/games/1v1lol/", category:"Shooter", img:"https://coreportals.github.io/images/games/1v1lol.png" },
   { name:"Geometry Dash", url:"https://xpixelcoderx.github.io/games/geometrydash/", category:"Platform", img:"https://coreportals.github.io/images/games/geometry-dash.png" },
   { name:"Cookie Clicker", url:"https://xpixelcoderx.github.io/games/cookie-clicker/", category:"Clicker", img:"https://coreportals.github.io/images/games/cookie-clicker.png" },
@@ -240,7 +234,7 @@ function render(tab){
     return byText && byCat;
   });
   if(list.length===0){
-    const t = {name:"No items yet", category:"Template", img:"/images/logo.png"};
+    const t = {name:"No items yet", category:"Template", img:"https://coreportals.github.io/images/logo.png"};
     grid.appendChild(createCard(t, tab));
   }else{
     list.forEach(it=>grid.appendChild(createCard(it, tab)));
