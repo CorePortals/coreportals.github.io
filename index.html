@@ -16,17 +16,12 @@ body{
     radial-gradient(1200px 900px at 20% -10%, #3c1b9e 0%, #2a1873 60%, #1a144e 100%),
     radial-gradient(900px 700px at 115% 55%, rgba(70,40,180,.35), rgba(32,24,96,0) 70%),
     linear-gradient(180deg, #20155a 0%, #1a144e 100%);
-  background-repeat:no-repeat;
-  background-attachment:fixed;
-  color:var(--text);
+  background-repeat:no-repeat;background-attachment:fixed;color:var(--text);
   font-family:"Lexend",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
-  overflow-x:hidden
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden
 }
 .bg-waves{pointer-events:none;position:fixed;inset:-10%;z-index:-3;filter:blur(36px);will-change:transform}
-.bg-waves::before,.bg-waves::after{
-  content:"";position:absolute;inset:-40%;
+.bg-waves::before,.bg-waves::after{content:"";position:absolute;inset:-40%;
   background:
     radial-gradient(40% 60% at 20% 30%,rgba(255,255,255,.08),transparent 60%),
     radial-gradient(30% 50% at 70% 10%,rgba(126,224,255,.18),transparent 60%),
@@ -174,7 +169,7 @@ footer{color:var(--muted);font-size:14px;text-align:center;padding:24px 0 32px}
 <footer>Byte56 Dev Team: Edwin Sheen, Otto Holmes, Jonah Ehrlich, Eddie Meyers, Josh Pettit</footer>
 
 <script>
-
+// ===== YOUR EXISTING ARRAYS (unchanged) =====
 const games = [
       { name: "10 Minutes Till Dawn", url: "https://xpixelcoderx.github.io/games/10-minutes-till-dawn/", img: "/images/games/10-minutes-till-dawn.png", category: "Action" },
       { name: "100ng", url: "https://xpixelcoderx.github.io/games/100ng/", img: "/images/games/100ng.png", category: "Arcade" },
@@ -386,14 +381,11 @@ const games = [
       { name: "Mario", url: "https://xpixelcoderx.github.io/games/mario/", icon: "fa-hat-cowboy", category: "Platform" },
       { name: "Marvin Spectrum", url: "https://xpixelcoderx.github.io/games/marvinspectrum/", icon: "fa-palette", category: "Puzzle" },
       { name: "Matrix Rampage", url: "https://xpixelcoderx.github.io/games/matrixrampage/", icon: "fa-biohazard", category: "Action" },
-      { name: "Minecraft 1.5.2", url: "https://xpixelcoderx.github.io/games/mc1.5.2/", icon: "fa-cube", category: "Sandbox" },
+      { name: "Minecraft 1.8.8", url: "https://xpixelcoderx.github.io/resent", icon: "fa-cube", category: "Sandbox" },
       { name: "Minecraft Beta 0.30", url: "https://xpixelcoderx.github.io/games/mcbeta0.30/", icon: "fa-cube", category: "Sandbox" },
       { name: "Minecraft Beta 1.3", url: "https://xpixelcoderx.github.io/games/mcbeta1.3/", icon: "fa-cube", category: "Sandbox" },
       { name: "Meat Boy", url: "https://xpixelcoderx.github.io/games/meat-boy/", icon: "fa-drumstick-bite", category: "Platform" },
       { name: "Meme 2048", url: "https://xpixelcoderx.github.io/games/meme2048/", icon: "fa-th-large", category: "Puzzle" },
-      { name: "Minecraft Classic", url: "https://xpixelcoderx.github.io/games/minecraft-classic/", icon: "fa-cube", category: "Sandbox" },
-      { name: "Minecraft", url: "https://xpixelcoderx.github.io/games/minecraft/", icon: "fa-cube", category: "Sandbox" },
-      { name: "Minecraft Beta", url: "https://xpixelcoderx.github.io/games/minecraftbeta/", icon: "fa-cube", category: "Sandbox" },
       { name: "Minesweeper", url: "https://xpixelcoderx.github.io/games/minesweeper/", icon: "fa-bomb", category: "Puzzle" },
       { name: "Mini Stilts", url: "https://xpixelcoderx.github.io/games/mini-stilts/", icon: "fa-shoe-prints", category: "Arcade" },
       { name: "Mini Putt", url: "https://xpixelcoderx.github.io/games/miniputt/", icon: "fa-golf-ball", category: "Sports" },
@@ -571,23 +563,19 @@ const games = [
       { name: "You Are Bezos", url: "https://xpixelcoderx.github.io/games/you-are-bezos/", icon: "fa-dollar-sign", category: "Simulation" },
       { name: "Zig Zag", url: "https://xpixelcoderx.github.io/games/zig-zag/", icon: "fa-route", category: "Arcade" },
       { name: "Zombocalypse", url: "https://xpixelcoderx.github.io/games/zombocalypse/", icon: "fa-skull", category: "Action" },
-      { name: "Zombs Royale", url: "https://xpixelcoderx.github.io/games/zombs-royale/", icon: "fa-crosshairs", category: "Shooter" }  
+      { name: "Zombs Royale", url: "https://xpixelcoderx.github.io/games/zombs-royale/", icon: "fa-crosshairs", category: "Shooter" }    
 ];
-
 const events = [
   { name:"CorePortals launch window announced — stay tuned!", category:"Announcement", img:"https://coreportals.github.io/images/logo.png" },
   { name:"Community tournament coming soon", category:"Event", img:"https://coreportals.github.io/images/logo.png" }
 ];
-
 const proxies = [
   { name:"Ghost Proxy", url:"https://1.jobvn.com", category:"Network", img:"/images/proxies/ghost.png" }
 ];
-
 const updates = [
   { name:"Update Beta 0.1.1 - Added games, Proxies, and More!", category:"Status", img:"https://coreportals.github.io/images/logo.png" },
   { name:"Working on... Adding images to games, adjust heeader.", category:"Upcoming", img:"https://coreportals.github.io/images/logo.png" }
 ];
-
 const tabData = { games, events, proxies, updates };
 
 const el = {
@@ -621,24 +609,47 @@ document.getElementById("popoutBtn").addEventListener("click", openPopout);
 
 function currentTab(){return document.querySelector(".tab-btn.active").dataset.tab}
 
+// --- NEW: slugify helper so every game uses images/games/<slug>.png ---
+function slugify(name){
+  return name
+    .toLowerCase()
+    .replace(/&/g,'and')
+    .replace(/['’]/g,'')
+    .replace(/[^a-z0-9]+/g,'-')
+    .replace(/-+/g,'-')
+    .replace(/^-|-$/g,'');
+}
+
 function createCard(item, type){
   const isTextOnly = (type==="events"||type==="updates");
   const c = document.createElement("div");
   c.className = isTextOnly ? "card bar disabled" : "card";
+
   const img = document.createElement("img");
   img.className = "logo-img";
   img.alt = item.name;
-  img.src = item.img || "https://coreportals.github.io/images/logo.png";
+
+  // For games: ALWAYS use images/games/<slug>.png (overrides old `icon`)
+  if(type==="games"){
+    const slug = slugify(item.name);
+    img.src = `images/games/${slug}.png`;
+  }else{
+    img.src = item.img || "https://coreportals.github.io/images/logo.png";
+  }
+
   const t = document.createElement("div");
   t.className = "title";
   t.textContent = item.name;
+
   const s = document.createElement("div");
   s.className = "sub";
   if(type==="games"){ s.textContent = (item.category||"") }
   else if(type==="proxies"){ s.textContent = (item.category||"") + (item.url?(" • "+item.url):"") }
   else { s.textContent = (item.category||"") }
+
   c.appendChild(img); c.appendChild(t); c.appendChild(s);
-  if(!isTextOnly){ c.addEventListener("click",()=>openOverlay(item.url)) }
+  if(!isTextOnly && type!=="proxies"){ c.addEventListener("click",()=>openOverlay(item.url)) }
+  if(type==="proxies" && item.url){ c.addEventListener("click",()=>window.open(item.url,"_blank")) }
   return c;
 }
 
@@ -677,10 +688,7 @@ function openPopout(){
 <title>My Drive - Google Drive</title>
 <link rel="icon" type="image/png" href="https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png">
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<style>
-  html,body{margin:0;height:100%;width:100%;overflow:hidden;background:#0b1220}
-  iframe{border:0;width:100%;height:100vh}
-</style>
+<style>html,body{margin:0;height:100%;width:100%;overflow:hidden;background:#0b1220}iframe{border:0;width:100%;height:100vh}</style>
 </head>
 <body>
   <iframe src="https://coreportals.github.io" allowfullscreen></iframe>
