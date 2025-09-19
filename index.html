@@ -172,10 +172,9 @@ footer{color:var(--muted);font-size:14px;text-align:center;padding:24px 0 32px}
 </div>
 
 <footer>© 2025 Byte56</footer>
-<footer>Byte56 Dev Team: Edwin Sheen, Otto Holmes, Jonah Ehrlich, Eddie Meyers, Josh Pettit</footer>
+<footer>Byte56 Dev Team: Edwin Sheen, Otto Holmes, Jonah Ehrlich, Eddie Meyers, Reyansh Goley, Josh Pettit</footer>
 
 <script>
-// ===== YOUR EXISTING ARRAYS (unchanged) =====
 const games = [
       { name: "10 Minutes Till Dawn", url: "https://xpixelcoderx.github.io/games/10-minutes-till-dawn/", img: "/images/games/10-minutes-till-dawn.png", category: "Action" },
       { name: "100ng", url: "https://xpixelcoderx.github.io/games/100ng/", img: "/images/games/100ng.png", category: "Arcade" },
@@ -611,10 +610,8 @@ el.category.addEventListener("change", ()=>render(currentTab()));
 document.getElementById("back").addEventListener("click", closeOverlay);
 document.getElementById("full").addEventListener("click", ()=>{const f=el.frame;if(f.requestFullscreen) f.requestFullscreen()});
 document.getElementById("popoutBtn").addEventListener("click", openPopout);
-
+  
 function currentTab(){return document.querySelector(".tab-btn.active").dataset.tab}
-
-// --- NEW: slugify helper so every game uses images/games/<slug>.png ---
 function slugify(name){
   return name
     .toLowerCase()
@@ -634,7 +631,6 @@ function createCard(item, type){
   img.className = "logo-img";
   img.alt = item.name;
 
-  // For games: ALWAYS use images/games/<slug>.png (overrides old `icon`)
   if(type==="games"){
     const slug = slugify(item.name);
     img.src = `images/games/${slug}.png`;
